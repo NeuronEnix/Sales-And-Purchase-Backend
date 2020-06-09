@@ -1,13 +1,17 @@
 const User = require( './user.model.js' ) ;
 const handler = require( '../../handler.js' ) ;
 
-module.exports.login = async (req, res) => {
+module.exports.login = async ( req, res ) => {
     try {
         const { Email, Password } = req.body ;
-        const user = await User.findByCredentials( Email, Password ) ;
-        const token = await user.generateAuthToken() ;
-        const resData = { token : token, userType : user.Type } ;
-        handler.send( res, 200, resData ) ;
+        if( Email && Password ) {
+            const user = await User.findByCredentials( Email, Password ) ;
+            const token = await user.generateAuthToken() ;
+            const resData = { token : token, userType : user.Type } ;
+            handler.send( res, 200, resData ) ;
+        }else {
+            handler.send( res, 400, handler.errData.missingField ) ;
+        }
     } catch ( error ) {
        handler.send( res, 400, handler.errData.invalidCredential ) ;
     }
