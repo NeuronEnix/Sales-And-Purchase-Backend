@@ -1,0 +1,19 @@
+users {
+    _id : 
+    FullName : 
+    Email : 
+    Password : 
+    Token : 
+}
+items{
+    _id :
+    Stock_id : 
+    Name :
+    Unit : kg,ltr,g,...
+    
+}
+stocks{
+    _id :
+    Qty :
+    
+}
