@@ -1,19 +1,53 @@
 users {
     _id : 
+    UserID :
     FullName : 
     Email : 
     Password : 
     Token : 
+    Status : 
 }
-items{
+items {
     _id :
-    Stock_id : 
+    UserID :
     Name :
-    Unit : kg,ltr,g,...
-    
-}
-stocks{
-    _id :
+    Unit :
     Qty :
-    
+}
+
+sellers {
+    _id :
+    UserID :
+    Name :
+}
+purchases {
+    _id :
+    SellerID :
+    Items : [
+        { 
+            ItemID :
+            Qty : 
+        }
+    ]
+}
+bills {
+    _id :
+    Items : [
+        { 
+            ItemID :
+            Qty : 
+        }
+    ]
+}
+stock_edits {
+    _id :
+    Type :  'd' ( defect )  ||  'r' ( return )  ||  's' ( stock rebalance )
+    Info :
+}
+
+stock_logs {
+    _id :  
+    UserID :   
+    Type :  'b' ( bill )  ||  'p' ( purchase )  ||  'e' ( edit )
+    ID :
 }
