@@ -4,6 +4,7 @@ users {
     FullName : 
     Email : 
     Password : 
+    Type :
     Token : 
     Status : 
 }
