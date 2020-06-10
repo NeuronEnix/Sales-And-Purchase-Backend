@@ -19,10 +19,16 @@ var userSchema = new mongoose.Schema ({
         },
     Type :{
         type : String,
+        default: 'e',
         required : true
     },
     Token : {
         type: String
+    },
+    Status : {
+        type : String,
+        default : 'a',
+        required : true
     }
 });
 
