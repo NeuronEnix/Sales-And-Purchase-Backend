@@ -4,7 +4,8 @@ const mongoose = require( 'mongoose' ) ;
 
 var userSchema = new mongoose.Schema ({
     UserID : {
-        type : mongoose.Schema.Types.ObjectId
+        type : mongoose.Schema.Types.ObjectId,
+        required : true
     },
     FullName : {
         type : String,
