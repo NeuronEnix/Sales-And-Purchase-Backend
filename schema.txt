@@ -7,6 +7,7 @@ users {
     Token : 
     Status : 
 }
+
 items {
     _id :
     UserID :
@@ -20,6 +21,7 @@ sellers {
     UserID :
     Name :
 }
+
 purchases {
     _id :
     SellerID :
@@ -30,6 +32,7 @@ purchases {
         }
     ]
 }
+
 bills {
     _id :
     Items : [
@@ -39,6 +42,7 @@ bills {
         }
     ]
 }
+
 stock_edits {
     _id :
     Type :  'd' ( defect )  ||  'r' ( return )  ||  's' ( stock rebalance )
