@@ -6,10 +6,12 @@ module.exports.send = ( resObj, resCode, data ) => {
 }
 
 module.exports.errData = {
-    invalidReq          : { code : 1, msg : 'Invalid request'               },
-    invalidCredential   : { code : 2, msg : 'Incorrect user name or pass'   },
-    missingField        : { code : 3, msg : 'Required Field Missing'        },
-    dupEmail            : { code : 4, msg : 'Email already Exists'          }
+    invalidReq          : { code : 1 , msg : 'Invalid request'               },
+    invalidCredential   : { code : 2 , msg : 'Incorrect user name or pass'   },
+    missingField        : { code : 3 , msg : 'Required Field Missing'        },
+    dupEmail            : { code : 4 , msg : 'Email already Exists'          },
+    invalidToken        : { code : 5 , msg : 'Invalid Token'                 },
+    dupItem             : { code : 6 , msg : 'Item already Exists'           }
 } ;
 
 module.exports.defRes = ( resObj, apiName ) => {
