@@ -20,7 +20,7 @@ module.exports.login = async ( req, res ) => {
 module.exports.signup = async ( req, res ) => {
     const { FullName, Email, Password, Type, UserID } = req.body ; // UserID -> _id of the account creator 
     try{
-        const user = await User.addUser( { FullName, Email, Password, Type, UserID } ) ;
+        const user = await User.add( { FullName, Email, Password, Type, UserID } ) ;
         console.log('user created ' ) ;
         console.log( { user : user } ) ;
         respond.ok( res ) ;

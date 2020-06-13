@@ -29,9 +29,9 @@ var userSchema = new mongoose.Schema ({
     }
 });
 
-userSchema.statics.addUser = async ( userData ) => {
-    const { FullName, Email, Password } = userData
-    if( FullName && Email && Password )
+userSchema.statics.add = async ( userData ) => {
+    const { FullName, Email, Password, UserID } = userData
+    if( FullName && Email && Password, UserID )
         console.log( 'mandatory fields present')
     else { console.log(' missing field' ) ; throw errData.missingField ; }
     const userFound = await User.findOne( { Email } )
