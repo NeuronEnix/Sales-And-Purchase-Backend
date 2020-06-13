@@ -62,6 +62,15 @@ module.exports.add = async ( req, res ) => {
     }
 }
 
+module.exports.detail = async ( req, res ) => {
+    try{
+        const item = await Item.detail( req.body.Name ) ;
+        respond.ok( res, item ) ;
+    } catch( err ) {
+        respond.err( res, err ) ;
+    }
+}
+
 module.exports.update = ( req, res ) => {
     respond.defRes( res ,'update()' ) ;
 }
