@@ -1,33 +1,30 @@
 const User = require( './user.model.js' ) ;
-const handler = require( '../../handler.js' ) ;
+const respond = require( '../../response.js' ) ;
 
 module.exports.login = async ( req, res ) => {
-    try {
-        const { Email, Password } = req.body ;
-        if( Email && Password ) {
-            const user = await User.findByCredentials( Email, Password ) ;
-            const token = await user.generateAuthToken() ;
-            const resData = { token : token, userType : user.Type } ;
-            handler.send( res, 200, resData ) ;
-        }else {
-            handler.send( res, 400, handler.errData.missingField ) ;
-        }
-    } catch ( error ) {
-       handler.send( res, 400, handler.errData.invalidCredential ) ;
+    
+    const { Email, Password } = req.body ;
+    try{
+        const user    = await User.lookUp( { Email, Password } ) ;
+        console.log('email, pass matched ') ;
+        const token   = await user.genToken() ;
+        console.log( 'token generated') ;
+        const resData = { token : token, userType : user.Type } ;
+        respond.ok( res, resData ) ;
+    } catch ( err ) {
+        console.log('login err!!!') ;
+        respond.err( res, err ) ;
     }
 }
 
-module.exports.signup = ( req, res ) => {
-    var user = new User() ;
-    Object.assign( user, req.body ) ;
-    user.save()
-        .then( value => {
-            handler.send( res, 200 ) ;
-        })
-        .catch( err => {
-            if( err.name === 'ValidationError' )
-                handler.send( res, 400, handler.errData.missingField ) ;
-            else    
-                handler.send( res, 400, handler.errData.dupEmail ) ;
-        });
+module.exports.signup = async ( req, res ) => {
+    const { FullName, Email, Password, Type, UserID } = req.body ; // UserID -> _id of the account creator 
+    try{
+        const user = await User.addUser( { FullName, Email, Password, Type, UserID } ) ;
+        console.log('user created ' ) ;
+        console.log( { user : user } ) ;
+        respond.ok( res ) ;
+    } catch( err ) {
+        respond.err( res, err ) ;
+    }
 }
