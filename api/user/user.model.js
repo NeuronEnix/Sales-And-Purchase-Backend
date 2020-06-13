@@ -22,7 +22,7 @@ var userSchema = new mongoose.Schema ({
         type : String, default: 'e',
     },
     Token : {
-        type: String
+        type : String
     },
     Status : {
         type : String, default : 'a',
