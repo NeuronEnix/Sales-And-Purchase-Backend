@@ -4,8 +4,8 @@ const cors = require( 'cors' ) ;
 const express = require( 'express' ) ;
 const api = require( './api' ) ;
 const bodyParser = require( 'body-parser' ) ;
+const auth = require( './middleware/auth.js' ) ;
 
-// const auth = require( './middleware/auth.js' ) ;
 const db = require( './connection.js' ) ;
 db.connect() ;
 
@@ -17,6 +17,7 @@ app.use( bodyParser.urlencoded( { extended: false } ) )
 // parse application/json
 app.use( bodyParser.json() )
 
+app.use( auth ) ;
 app.use( cors() ) ;
 app.use( api.router ) ;
 
