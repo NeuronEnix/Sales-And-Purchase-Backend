@@ -28,7 +28,10 @@ module.exports.errData = {
     signupErr           : { code : 7  , msg : 'Error while saving to db'     },
     validationErr       : { code : 8  , msg : 'Validation Error'             },
     tokenErr            : { code : 9  , msg : 'Token generation failed'      },
-    dbCommitErr         : { code : 10 , msg : 'Failed to save to DB'      },
+    dbCommitErr         : { code : 10 , msg : 'Failed to save to DB'         },
+    addItemErr          : { code : 11 , msg : 'Failed to add Item'           },
+    itemMatchErr        : { code : 12 , msg : 'Error while matching item'    },
+    itemFetchErr        : { code : 13 , msg : 'Error while fetching item'    },
 } ;
 
 module.exports.defRes = ( resObj, apiName ) => {
