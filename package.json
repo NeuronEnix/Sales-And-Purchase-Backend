@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/neuron909/Sales-And-Purchace-Backend#readme",
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",

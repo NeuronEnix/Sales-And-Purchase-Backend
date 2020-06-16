@@ -2,7 +2,7 @@ require( 'dotenv' ).config() ; // Configures env vars ;
 
 const cors = require( 'cors' ) ;
 const express = require( 'express' ) ;
-const api = require( './api' ) ;
+const App = require( './app' ) ;
 const bodyParser = require( 'body-parser' ) ;
 const auth = require( './middleware/auth.js' ) ;
 
@@ -19,7 +19,7 @@ app.use( bodyParser.json() )
 
 app.use( auth ) ;
 app.use( cors() ) ;
-app.use( api.router ) ;
+app.use( App.router ) ;
 
 PORT = process.env.SERVER_PORT ;
 app.listen( PORT, () => { console.log( 'Listening on port ' + PORT ) } ) ;

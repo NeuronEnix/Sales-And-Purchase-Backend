@@ -14,8 +14,7 @@ const auth = async( req, res, next ) => {
             throw new Error();
         }
         console.log( 'Token Verified' ) ;
-        req.body.UserID = user._id ;
-        req.body.userDoc = user ;
+        req.user = user ;
         return next();
     } catch ( err ) {
         if( req.url === '/user/login' ) {

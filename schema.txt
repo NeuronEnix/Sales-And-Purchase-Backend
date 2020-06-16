@@ -25,10 +25,10 @@ sellers {
 
 purchases {
     _id :
-    SellerID :
+    SellerName :
     Items : [
         { 
-            ItemID :
+            Name :
             Qty : 
         }
     ]
@@ -38,7 +38,7 @@ bills {
     _id :
     Items : [
         { 
-            ItemID :
+            Name :
             Qty : 
         }
     ]
