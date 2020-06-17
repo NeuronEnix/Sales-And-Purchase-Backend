@@ -35,8 +35,9 @@ module.exports.detail = async ( req, res ) => {
 }
 
 module.exports.search = ( req, res ) => {
-    console.log( { reqQuery :  req.query.i } ) ;
-    const item = req.query.i ;
+    console.log( { reqQuery :  req.query.s } ) ;
+    const item = req.query.s ;
+    if( !item ) return respond.ok( res, [] ) ;
     Item.find(
         { Name : { $regex : new RegExp( item ) } },
         { _id : 0, Name : 1 } ,
