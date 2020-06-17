@@ -5,8 +5,13 @@ let ID = 1;
 const auth = async( req, res, next ) => {
     console.log( '\n\n' ) ;
     console.log( { ID : ID, URL : req.url, Method : req.method, Body : req.body, } ) ;
+<<<<<<< HEAD
     res.ID = ID++ ;    res.TS = Date.now() ;
     if ( req.method === 'OPTIONS' ) return respond.ok( res ) ;
+=======
+    res.ID = ID++ ;
+    // if ( req.method === 'OPTIONS' ) return respond.ok( res ) ;
+>>>>>>> 1efc2a56fa5483c8ecf785098e38093daaea77f8
     try {
         const token = req.header( 'Authorization' ) ;
         const _id = jwt.verify( token, process.env.JWT_KEY ) ;
