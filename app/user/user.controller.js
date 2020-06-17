@@ -23,6 +23,7 @@ module.exports.login = async ( req, res ) => {
         const resData = { userToken : user.Token, userType : user.Type } ;
         respond.ok( res, resData ) ;
     } catch ( err ) {
+        console.log('kori')
         respond.err( res, err ) ;
     }
 }

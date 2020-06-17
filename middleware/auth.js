@@ -1,10 +1,11 @@
 const jwt     = require( 'jsonwebtoken' ) ;
 const respond = require( '../response.js' ) ;
 const User    = require( '../app/user/user.model.js' ) ;
-
+const ID = 1;
 const auth = async( req, res, next ) => {
     console.log( '\n\n' )
-    console.log( { url : req.url, req: req.body } ) ;
+    console.log( { url : req.url, req: req.body, ID : ID } ) ;
+    res.ID = ID++ ;
     try {
         const token = req.header( 'Authorization' ) ;
         const _id = jwt.verify( token, process.env.JWT_KEY ) ;
