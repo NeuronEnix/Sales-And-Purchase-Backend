@@ -1,5 +1,5 @@
 {
-  "name": "sales-and-purchace-backend",
+  "name": "sales-and-purchase-backend",
   "version": "1.0.0",
   "description": "Managing bills and purchases and get set details",
   "main": "server.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/neuron909/Sales-And-Purchace-Backend.git"
+    "url": "git+https://github.com/neuron909/Sales-And-Purchase-Backend.git"
   },
   "author": "Kaushik R Bangera",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/neuron909/Sales-And-Purchace-Backend/issues"
+    "url": "https://github.com/neuron909/Sales-And-Purchase-Backend/issues"
   },
-  "homepage": "https://github.com/neuron909/Sales-And-Purchace-Backend#readme",
+  "homepage": "https://github.com/neuron909/Sales-And-Purchase-Backend#readme",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "bcryptjs": "^2.4.3",
