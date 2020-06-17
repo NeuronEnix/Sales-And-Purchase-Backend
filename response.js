@@ -3,7 +3,7 @@ module.exports.ok = ( resObj, data ) => {
         code : 0,
         data : data
     };
-    console.log( { res : res, ID : res.ID } ) ;
+    console.log( { ID : resObj.ID, res : res, } ) ;
     resObj.status( 200 ).send( res ) ;
 }
 
@@ -17,8 +17,8 @@ module.exports.err = ( resObj, err ) => {
         res = this.errData.unknownErr ;
         console.log( err ) ;
     } finally {
-        console.log( { res : res, ID : res.ID } ) ;
-        resObj.status( 400 ).send( res ) ;
+        console.log( { ID : resObj.ID, res : res, } ) ;
+        resObj.status( 200 ).send( res ) ;
     }
 }
 
@@ -34,6 +34,6 @@ module.exports.errData = {
 
 module.exports.defRes = ( resObj, apiName ) => {
     const res = { code : -1, status : 'FAILED', err : 'In Progress', api : apiName }
-    console.log( { res : res, ID : res.ID } ) ;
-    resObj.status( 400 ).send( res ) ;
+    console.log( { ID : resObj.ID, res : res, } ) ;
+    resObj.status( 200 ).send( res ) ;
 }
