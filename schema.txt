@@ -34,7 +34,7 @@ purchases {
     ]
 }
 
-bills {
+sales {
     _id :
     Items : [
         { 
