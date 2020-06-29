@@ -42,10 +42,9 @@ module.exports.search = ( req, res ) => {
         { Name : { $regex : new RegExp( item ) } },
         { _id : 0, Name : 1 } ,
         function matchedResult ( err, data ) {
-            if( err ) {
-                console.log( 'Error while matching' ) ;
+            if ( err ) {
                 return respond.err( res, { err : errData.itemMatchErr } ) ;
-            }else{
+            } else {
                 return respond.ok( res, data ) ;
             }
         }

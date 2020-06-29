@@ -16,27 +16,16 @@ let purchaseSchema = new mongoose.Schema ({
         type : [ itemSchema ], required : true
     }
 });
-
 purchaseSchema.statics.Create = async ( purchaseData ) => {
-    const { Items, SellerName } = purchaseData ;
-    console.log('fun ran')
-    if( Items && SellerName ) {
+    try {
         const purchase = new Purchase() ;
-        Object.assign( purchase, { SellerName, Items } ) ;
-        try{
-            console.log( "saving Purchase")
-            return await purchase.save() ;
-        } catch( err ) {
-            if( err.name === 'ValidationError' ) {
-                for (field in err.errors) console.log( field )
-                throw errData.validationErr ;
-            }
-            throw errData.dbCommitErr ;
-        }
-    } else {
-        throw errData.missingField ;
+        Object.assign( purchase, purchaseData ) ;
+        return await purchase.save() ;
+    } catch ( err ) {
+        throw { err : errData.unknownErr } ;
     }
-} 
+}
+
 
 const Purchase = mongoose.model( 'purchases', purchaseSchema ) ;
 module.exports = Purchase;
