@@ -8,9 +8,6 @@ const auth = async( req, res, next ) => {
         console.log( { ID : ID, URL : req.url, Method : req.method, Body : req.body, } ) ;
         res.ID = ID++ ;    res.TS = Date.now() ;
         
-        // console.log( req.ip )
-        if ( toString( req.method ) == 'OPTIONS' ) return respond.ok( res ) ;
-
         const token = req.header( 'Authorization' ) ;
         const _id = jwt.verify( token, process.env.JWT_KEY ) ;
 

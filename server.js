@@ -17,8 +17,8 @@ app.use( bodyParser.urlencoded( { extended: false } ) )
 // parse application/json
 app.use( bodyParser.json() )
 
-app.use( auth ) ;
 app.use( cors() ) ;
+app.use( auth ) ;
 app.use( App.router ) ;
 
 PORT = process.env.SERVER_PORT ;
