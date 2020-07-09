@@ -14,7 +14,6 @@ const createSchema = Joi.object({
     Items      : Joi.array().min( 1 ).required()
 })
 module.exports.create = async ( req, res, next ) => {
-    console.log( 'validation sale')
     try { 
         const createSchemaValidation = createSchema.validateAsync( req.body     ) ;
         const itemSchemaValidation   = itemSchema.validateAsync( req.body.Items ) ;

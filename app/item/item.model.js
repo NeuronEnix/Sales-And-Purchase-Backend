@@ -14,8 +14,9 @@ itemSchema.statics.AddNewItem = async ( itemData ) => {
         Object.assign( item, itemData ) ;
         return await item.save() ;
     } catch ( err ) {
-        if ( err.code === 11000 )
+        if ( err.code === 11000 ){
             throw { err : errData.duplicateErr, info : 'Item' } ;
+        }
         throw err ;
     }
 }
@@ -35,9 +36,9 @@ itemSchema.statics.Update = async ( { Name, Unit, Qty } ) => {
 
 itemSchema.statics.Detail = async ( itemName ) => {
     const itemFound = await Item.find( { Name : itemName }, { _id : 0, __v : 0, UserID : 0 } ) ;
-    if ( itemFound.length ) return itemFound ;
-    throw { err : errData.resNotFound, info : 'Item' } ;
+    if ( !itemFound.length ) throw { err : errData.resNotFound, info : 'Item' } ;
+    return itemFound ;
 }
 
 const Item = mongoose.model( 'items', itemSchema ) ;
-module.exports = Item;
+module.exports = Item ;

@@ -30,6 +30,7 @@ module.exports.errData = {
     dbCommitErr         : { code : 4  , err : 'Error While Saving To Database'  },
     duplicateErr        : { code : 5  , err : 'Value Already Exist (Duplicate)' },
     validationErr       : { code : 6  , err : 'Validation Error'                },
+    outOfStock          : { code : 7  , err : 'Not Enough Stock'                },
 } ;
 
 module.exports.defRes = ( resObj, apiName ) => {

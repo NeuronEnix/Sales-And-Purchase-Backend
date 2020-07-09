@@ -1,7 +1,7 @@
 const bcrypt = require( 'bcryptjs' ) ;
 const mongoose = require( 'mongoose' ) ;
 const errData = require( '../../response.js' ).errData ;
-
+const bcryptRounds = parseInt( process.env.bcryptRounds ) ;
 var userSchema = new mongoose.Schema ({
     Email    : { type : String, unique : true },
     Password : String,
@@ -17,6 +17,7 @@ var userSchema = new mongoose.Schema ({
 userSchema.statics.AddNewUser = async ( userData ) => {
     try {
         const user = new User() ;
+        userData.Password = await bcrypt.hash( userData.Password, bcryptRounds ) ;
         Object.assign( user, userData ) ;
         return await user.save() ;
     } catch ( err ) {

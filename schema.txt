@@ -17,6 +17,13 @@ items {
     Qty :
 }
 
+item_logs 
+    _id :
+    Type :  'b' ( bill )  ||  'p' ( purchase )  || 'd' ( defect )  ||  'e' ( expired )  ||  'u' ( item update ( rebalancing stocks ) ) ,
+    BillID : || SaleID :
+    
+}
+
 sellers {
     _id :
     UserID :
@@ -25,7 +32,7 @@ sellers {
 
 purchases {
     _id :
-    SellerName :
+    SellerID :
     Items : [
         { 
             Name :
@@ -42,17 +49,4 @@ sales {
             Qty : 
         }
     ]
-}
-
-stock_edits {
-    _id :
-    Type :  'd' ( defect )  ||  'r' ( return )  ||  's' ( stock rebalance )
-    Info :
-}
-
-stock_logs {
-    _id :  
-    UserID :   
-    Type :  'b' ( bill )  ||  'p' ( purchase )  ||  'e' ( edit )
-    ID :
 }

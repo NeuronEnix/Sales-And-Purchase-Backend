@@ -7,7 +7,8 @@ const auth = async( req, res, next ) => {
         console.log( '\n\n' ) ;
         console.log( { ID : ID, URL : req.url, Method : req.method, Body : req.body, } ) ;
         res.ID = ID++ ;    res.TS = Date.now() ;
-
+        
+        // console.log( req.ip )
         if ( toString( req.method ) == 'OPTIONS' ) return respond.ok( res ) ;
 
         const token = req.header( 'Authorization' ) ;
@@ -20,8 +21,12 @@ const auth = async( req, res, next ) => {
         req.user = user ;
         return next();
     } catch ( err ) {
+        // req.user = { _id : '5efc760f743081588775c454' } ; return next();
+        if ( req.url === '/user/login' ) return next() ;
+        
+        else if ( err.name === 'JsonWebTokenError' )
+            return respond.err( res, { err : respond.errData.invalidToken } )
 
-        if( req.url === '/user/login' ) return next() ;
         else return respond.err( res, err ) ;
     }
 }

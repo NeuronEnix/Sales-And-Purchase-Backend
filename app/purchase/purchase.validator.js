@@ -3,9 +3,9 @@ const Joi = require( '@hapi/joi' ) ;
 const respond = require( '../../response.js' ) ;
 const errData = respond.errData ;
 
-const Items = Joi.object().keys({
+const Items = Joi.object({
     Name : Joi.string().trim().min(2).max(10).required(),
-    Qty : Joi.number().positive().required()
+    Qty  : Joi.number().positive().required()
 })
 
 const itemSchema = Joi.array().items( Items ) ;
