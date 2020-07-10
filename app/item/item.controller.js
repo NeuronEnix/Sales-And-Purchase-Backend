@@ -2,12 +2,13 @@ const Item = require( './item.model.js' ) ;
 const respond = require( '../../response.js' ) ;
 const errData = respond.errData ;
 
-module.exports.add = async ( req, res ) => {
+module.exports.add = async ( req, res, next ) => {
     try {
         req.body.UserID = req.user._id ;
         const itemData = req.body ;
         await Item.AddNewItem( itemData ) ;
         respond.ok( res ) ;
+        return next() ;
     } catch ( err ) {
         respond.err( res, err ) ;
     }

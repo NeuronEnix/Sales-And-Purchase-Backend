@@ -17,11 +17,20 @@ items {
     Qty :
 }
 
-item_logs 
+// Type Values : for item_qty_logs
+    a : add,
+    p : purchase,
+    s : sell,
+    e : expired,
+    d : defect,
+    r : rollback,
+    u : update,
+
+item_qty_logs {
     _id :
-    Type :  'b' ( bill )  ||  'p' ( purchase )  || 'd' ( defect )  ||  'e' ( expired )  ||  'u' ( item update ( rebalancing stocks ) ) ,
-    BillID : || SaleID :
-    
+    Type :  
+    Item : [ { Name : , Qty : }, { Name : , Qty : } ]
+    Undo : true ||||| nothing
 }
 
 sellers {
@@ -33,20 +42,10 @@ sellers {
 purchases {
     _id :
     SellerID :
-    Items : [
-        { 
-            Name :
-            Qty : 
-        }
-    ]
+    Item : [ { Name : , Qty : }, { Name : , Qty : } ]
 }
 
 sales {
     _id :
-    Items : [
-        { 
-            Name :
-            Qty : 
-        }
-    ]
+    Item : [ { Name : , Qty : }, { Name : , Qty : } ]
 }
