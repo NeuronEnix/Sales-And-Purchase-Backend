@@ -3,16 +3,19 @@ const Joi = require( '@hapi/joi' ) ;
 const respond = require( '../../response.js' ) ;
 const errData = respond.errData ;
 
+const { _validator } = require('../../validation.js') ;
+const { _name, _unit } = _validator.Item ;
+
 const addSchema = Joi.object({
-    Name   : Joi.string().trim().min(1).max(10).required(),
-    Unit   : Joi.string().trim().min(1).max(5).required(),
+    Name   : Joi.string().trim().min(_name.min ).max(_name.max ).required(),
+    Unit   : Joi.string().trim().min(_unit.min ).max(_unit.max ).required(),
     Qty    : Joi.number().positive().required(),
 }) ;
 
-const updateSchema = Joi.object({
-    Name   : Joi.string().trim().min(1).max(10).required(),
-    Unit   : Joi.string().trim().min(1).max(5),
-    Qty    : Joi.number().positive(),
+const updateSchema  = Joi.object({
+    Name   : Joi.string().trim().min(_name.min ).max(_name.max ).required(),
+    Unit   : Joi.string().trim().min(_unit.min ).max(_unit.max ).required(),
+    Qty    : Joi.number().positive().required(),
 })
     .or( 'Unit', 'Qty' ) ;
 

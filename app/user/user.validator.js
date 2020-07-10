@@ -1,17 +1,21 @@
 const Joi = require( '@hapi/joi' ) ;
+
 const respond = require( '../../response.js' ) ;
 const errData = respond.errData ;
 
+const { _validator } = require('../../validation.js') ;
+const { _email, _pass, _fullName, _type } = _validator.User ;
+
 const loginSchema = Joi.object({
-    Email    : Joi.string().trim().min(1).max(10).required(),
-    Password : Joi.string().trim().min(1).max(10).required(),
+    Email    : Joi.string().trim().min(_email.min).max(_email.max).required(),
+    Password : Joi.string().trim().min(_pass.min ).max(_pass.max ).required(),
 }) ;
 
 const signupSchema = Joi.object({
-    FullName : Joi.string().trim().min(1).max(10).required(),
-    Email    : Joi.string().trim().min(1).max(10).required(),
-    Password : Joi.string().trim().min(1).max(10).required(),
-    Type     : Joi.string().trim().min(1).max(1 ).required(),
+    FullName : Joi.string().trim().min(_fullName.min).max(_fullName.max).required(),
+    Email    : Joi.string().trim().min(_email.min).max(_email.max).required(),
+    Password : Joi.string().trim().min(_pass.min ).max(_pass.max ).required(),
+    Type     : Joi.string().trim().min(_type.min ).max(_type.max ).required(),
 }) ;
 
 module.exports.login = async ( req, res, next ) => {

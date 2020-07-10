@@ -3,8 +3,11 @@ const Joi = require( '@hapi/joi' ) ;
 const respond = require( '../../response.js' ) ;
 const errData = respond.errData ;
 
+const { _validator } = require('../../validation.js') ;
+const { _name } = _validator.Seller ;
+
 const addSchema = Joi.object({
-    Name : Joi.string().trim().min(1).max(10).required(),
+    Name : Joi.string().trim().min(_name.min ).max(_name.max ).required(),
 })
 module.exports.add = async ( req, res, next ) => {
     try { 

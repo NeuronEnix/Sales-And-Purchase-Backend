@@ -3,8 +3,11 @@ const Joi = require( '@hapi/joi' ) ;
 const respond = require( '../../response.js' ) ;
 const errData = respond.errData ;
 
+const { _validator } = require('../../validation.js') ;
+const { _name } = _validator.Item ;
+
 const Items = Joi.object().keys({
-    Name : Joi.string().trim().min(2).max(10).required(),
+    Name : Joi.string().trim().min(_name.min ).max(_name.max ).required(),
     Qty : Joi.number().positive().required()
 })
 
