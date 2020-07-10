@@ -2,8 +2,9 @@ require( 'dotenv' ).config() ; // Configures env vars ;
 
 const cors = require( 'cors' ) ;
 const express = require( 'express' ) ;
-const App = require( './app' ) ;
 const bodyParser = require( 'body-parser' ) ;
+
+const App = require( './app' ) ;
 const auth = require( './middleware/auth.js' ) ;
 
 const db = require( './connection.js' ) ;
@@ -11,15 +12,11 @@ db.connect() ;
 
 const app = express() ;
 
-// parse application/x-www-form-urlencoded
-app.use( bodyParser.urlencoded( { extended: false } ) )
+// 1st arg : parse application/x-www-form-urlencoded
+// 2nd arg : parse application/json
+app.use( bodyParser.urlencoded( { extended: false } ), bodyParser.json() )
 
-// parse application/json
-app.use( bodyParser.json() )
-
-app.use( cors() ) ;
-app.use( auth ) ;
-app.use( App.router ) ;
+app.use( cors(), auth, App.router ) ;
 
 PORT = process.env.SERVER_PORT ;
 app.listen( PORT, () => { console.log( 'Listening on port ' + PORT ) } ) ;
