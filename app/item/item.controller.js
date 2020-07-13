@@ -4,7 +4,7 @@ const errData = respond.errData ;
 
 module.exports.add = async ( req, res, next ) => {
     try {
-        req.body.UserID = req.user._id ;
+        req.body.UserID = req.UserID;
         const itemData = req.body ;
         await Item.AddNewItem( itemData ) ;
         respond.ok( res ) ;
@@ -14,12 +14,13 @@ module.exports.add = async ( req, res, next ) => {
     }
 }
 
-module.exports.update = async ( req, res ) => {
+module.exports.update = async ( req, res, next ) => {
     try{
-        req.body.UserID = req.user._id ;
+        req.body.UserID = req.UserID ;
         const itemData  = req.body ;
         await Item.Update( itemData ) ;
         respond.ok( res ) ;
+        return next() ;
     } catch( err ) {
         respond.err( res, err ) ;
     }

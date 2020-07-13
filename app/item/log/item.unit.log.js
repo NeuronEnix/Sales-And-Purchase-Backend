@@ -4,10 +4,12 @@ const Item = require('../item.model');
 
 const itemSchema = new mongoose.Schema({
     Name : { type : String, ref  : 'items', required : true },
-    Qty  : { type : Number, required : true }
+    Unit : { type : String, required : true }
 }, { _id : false } ) ;
 
 const itemLogSchema = new mongoose.Schema ({
+    UserID : { type : mongoose.Schema.Types.ObjectId, required : true, index : true },
+    
     /*
     Type : values
     a : add,
@@ -18,10 +20,10 @@ const itemLogSchema = new mongoose.Schema ({
     r : rollback,
     u : update,
     */
-   Type   : String,
-   Undo   : Boolean, 
-   Item   : { type : [ itemSchema ], index : true },
-   UserID : { type : mongoose.Schema.Types.ObjectId, required : true, index : true },
+    Type   : { type : String },
+    Item  : { type : [ itemSchema ], index : true },
+    Undo   : Boolean, 
+
 });
 
 itemLogSchema.statics.Log = ( logData ) => {
@@ -33,5 +35,6 @@ itemLogSchema.statics.Log = ( logData ) => {
         })
 }
 
-const ItemLog = mongoose.model( 'item_qty_logs', itemLogSchema ) ;
+
+const ItemLog = mongoose.model( 'item_unit_logs', itemLogSchema ) ;
 module.exports = ItemLog;
