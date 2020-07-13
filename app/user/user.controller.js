@@ -1,11 +1,11 @@
-const jwt = require( 'jsonwebtoken' ) ;
-const User = require( './user.model.js' ) ;
+const User    = require( './user.model.js' ) ;
 const respond = require( '../../response.js' ) ;
-const { JWT_KEY, JWT_EXPIRES_IN } = process.env ;
+const { newAccessToken, newRefreshToken } = require( '../../middleware/auth.js' ) ;
+const { response } = require('express');
 
 module.exports.signup = async ( req, res ) => {
     try {
-        req.body.UserID = req.user._id ;    // UserID of the person creating this account
+        req.body.UserID = req.UserID ;   // UserID of the person creating this account
         const userData  = req.body ;
         await User.AddNewUser( userData ) ;
         respond.ok( res ) ;
@@ -18,11 +18,13 @@ module.exports.login = async ( req, res ) => {
     try {
         const userCredential = req.body ;
         const user = await User.LookUp( userCredential ) ;
-        user.Token = jwt.sign( { _id : user._id }, JWT_KEY, { expiresIn : JWT_EXPIRES_IN } ) ; 
-        user.save() ;
-        const resData = { userToken : user.Token, userType : user.Type } ;
-        respond.ok( res, resData ) ;
+        await newRefreshToken( res, user ) ;
+        return respond.ok( res, { AccessToken : newAccessToken( user ), Type : user.Type } ) ;
     } catch ( err ) {
         respond.err( res, err ) ;
     }
+}
+
+module.exports.logout = ( req, res ) => {
+    res.clearCookie('RefreshToken') ;     return respond.ok( res ) ;
 }
