@@ -104,3 +104,8 @@ module.exports.sale = {
     }),
 
 } ;
+
+module.exports.auth = {
+    refreshToken : Joi.forbidden(),
+    accessToken  : Joi.forbidden(),
+}
