@@ -37,7 +37,7 @@ module.exports.detail = async ( req, res ) => {
 }
 
 module.exports.search = ( req, res ) => {
-    const item = req.body.s ;
+    const item = req.body.S ;
     console.log( { search : item } ) ; //-Dev
     if( !item ) return respond.ok( res, [] ) ;
     Item.find(
