@@ -23,17 +23,16 @@ const detailSchema = Joi.object({
     Name   : Joi.string().trim().min(1).max(10).required(),
 }) ;
 
-module.exports.add = async ( req, res, next ) => {
-    try { await addSchema.validateAsync( req.body ) ; return next() ; }
+const searchSchema = Joi.object({
+    s : Joi.string().trim().min(1).max(10).required(),
+}) ;
+
+const validate = async ( req, res, next, schema ) => {
+    try { await schema.validateAsync( req.body ) ; return next() ; }
     catch ( err ) { return respond.err( res, { err : errData.validationErr, info : err.details[0].message } ) ; }
 } ;
 
-module.exports.update = async ( req, res, next ) => {
-    try { await updateSchema.validateAsync( req.body ) ; return next() ; }
-    catch ( err ) { return respond.err( res, { err : errData.validationErr, info : err.details[0].message } ) ; }
-} ;
-
-module.exports.detail = async ( req, res, next ) => {
-    try { await detailSchema.validateAsync( req.body ) ; return next() ; }
-    catch ( err ) { return respond.err( res, { err : errData.validationErr, info : err.details[0].message } ) ; }
-} ;
+module.exports.add    = async ( req, res, next ) => { validate( req, res, next, addSchema     ) ; } ;
+module.exports.update = async ( req, res, next ) => { validate( req, res, next, updateSchema  ) ; } ;
+module.exports.detail = async ( req, res, next ) => { validate( req, res, next, detailSchema  ) ; } ;
+module.exports.search = async ( req, res, next ) => { validate( req, res, next, searchSchema  ) ; } ;

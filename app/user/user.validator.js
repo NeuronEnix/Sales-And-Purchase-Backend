@@ -18,12 +18,10 @@ const signupSchema = Joi.object({
     Type     : Joi.string().trim().min(_type.min ).max(_type.max ).required(),
 }) ;
 
-module.exports.login = async ( req, res, next ) => {
-    try { await loginSchema.validateAsync( req.body ) ; return next() ; }
+const validate = async ( req, res, next, schema ) => {
+    try { await schema.validateAsync( req.body ) ; return next() ; }
     catch ( err ) { return respond.err( res, { err : errData.validationErr, info : err.details[0].message } ) ; }
 } ;
 
-module.exports.signup = async ( req, res, next ) => {
-    try { await signupSchema.validateAsync( req.body ) ; return next() ; }
-    catch ( err ) { return respond.err( res, { err : errData.validationErr, info : err.details[0].message } ) ; }
-} ;
+module.exports.login  = async ( req, res, next ) => { validate( req, res, next, loginSchema  ) ; } ;
+module.exports.signup = async ( req, res, next ) => { validate( req, res, next, signupSchema ) ; } ;
