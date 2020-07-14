@@ -72,7 +72,7 @@ module.exports.newRefreshToken = async ( res, user ) => {
 router.post( '/refresh-token' , async ( req, res ) => {
     try {
         await this.newRefreshToken( res, req.user ) ;
-        return respond.ok( res, { AccessToken : this.newAccessToken( req.user ), Type : req.user.Type } ) ;
+        return respond.ok( res, { AccessToken : this.newAccessToken( req.user ) } ) ;
     } catch( err ) {
         return respond.err( res, err ) ;
     }
