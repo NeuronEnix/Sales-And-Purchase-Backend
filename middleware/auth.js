@@ -10,7 +10,7 @@ const { ACCESS_TOKEN_KEY , ACCESS_TOKEN_EXPIRY  } = process.env ;
 const { REFRESH_TOKEN_KEY, REFRESH_TOKEN_EXPIRY } = process.env ;
 
 REFRESH_TOKEN_MAX_AGE = eval( process.env.REFRESH_TOKEN_MAX_AGE ) ;
-const skipURL = new Set( [ '/user/login', '/auth/access-token', '/auth/refresh-token' ] ) ;
+const skipURL = new Set( [ '/user/login', '/auth/access-token', '/auth/refresh-token', '/user/logout' ] ) ;
 const nonAdminAccessibleURL = new Set( [ '/sale/create' ] )
 let ID = 1;
 
