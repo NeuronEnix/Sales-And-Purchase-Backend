@@ -37,8 +37,8 @@ module.exports.detail = async ( req, res ) => {
 }
 
 module.exports.search = ( req, res ) => {
-    console.log( { reqQuery :  req.query.s } ) ;
-    const item = req.query.s ;
+    const item = req.body.s ;
+    console.log( { search : item } ) ; //-Dev
     if( !item ) return respond.ok( res, [] ) ;
     Item.find(
         { Name : { $regex : new RegExp( item ) } },

@@ -35,4 +35,7 @@ const validate = async ( req, res, next, schema ) => {
 module.exports.add    = async ( req, res, next ) => { validate( req, res, next, addSchema     ) ; } ;
 module.exports.update = async ( req, res, next ) => { validate( req, res, next, updateSchema  ) ; } ;
 module.exports.detail = async ( req, res, next ) => { validate( req, res, next, detailSchema  ) ; } ;
-module.exports.search = async ( req, res, next ) => { validate( req, res, next, searchSchema  ) ; } ;
+module.exports.search = async ( req, res, next ) => {
+    try { await searchSchema.validateAsync( req.body ) ; return next() ; }
+    catch ( err ) { return respond.err( res, { err : errData.validationErr } ) ; } ;
+} ;
