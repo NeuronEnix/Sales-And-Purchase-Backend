@@ -43,7 +43,7 @@ const authorize = async( req, res, next ) => {
 
 module.exports.validateRefreshToken = async ( req, res, next ) => {
     try {
-        // const user = await devValidation( req ) ; // --Dev
+        // const user = await devValidation( req ) ; // -Dev
         const { _id, Type, TS } = jwt.verify( req.cookies.RefreshToken , REFRESH_TOKEN_KEY ) ;     // --
         const user = await User.findOne( { _id, TS }, { TS, Type } )                // --
         if ( ! moment( TS ).isSame( moment( user.TS) ) ) throw 'err' ;
