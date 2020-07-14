@@ -42,7 +42,7 @@ module.exports.user = {
         Password : Joi.string().trim().min( User.pass.min  ).max( User.pass.max  ).required(),
     }),
 
-    logout : Joi.disallow(),
+    logout : Joi.forbidden(),
 
     signup : Joi.object({
         FullName : Joi.string().trim().min( User.fullName.min ).max( User.fullName.max ).required(),
