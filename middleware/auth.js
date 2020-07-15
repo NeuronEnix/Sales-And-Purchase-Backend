@@ -22,15 +22,13 @@ const authorize = async( req, res, next ) => {
         
         const AccessToken  = req.header( 'Authorization' ) ;
         const RefreshToken = req.cookies.RefreshToken ;  
-        // console.log( `AT :  ${AccessToken}` ) ;
-        // console.log( `RT :  ${RefreshToken}` ) ;
-        const { _id }  = jwt.verify( AccessToken , ACCESS_TOKEN_KEY  ) ;      // --
-        const { Type } =  jwt.verify( RefreshToken, REFRESH_TOKEN_KEY ) ;      // --
+        const { _id }  = jwt.verify( AccessToken , ACCESS_TOKEN_KEY  ) ;      
+        const { Type } =  jwt.verify( RefreshToken, REFRESH_TOKEN_KEY ) ;      //-Pop
         req.UserID = _id ;
 
-        if ( req.method === 'GET' || Type === 'a' ||  nonAdminAccessibleURL.has( req.url ) )   // --
+        if ( Type === 'a' ||  nonAdminAccessibleURL.has( req.url ) )   //-Pop
         return next();
-        else respond.err( res, errData.unAuthorized ) ;      // --
+        else respond.err( res, errData.unAuthorized ) ;      //-Pop
 
     } catch ( err ) {
         if ( skipURL.has( req.url ) )           return next() ;
