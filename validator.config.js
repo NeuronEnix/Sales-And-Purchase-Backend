@@ -3,24 +3,24 @@ const Joi = require( '@hapi/joi' ) ;
 //////////////////////////////////////////////
 // Min - Max
 const User = {
-    email    : { min : 1, max : 10 },
-    pass     : { min : 1, max : 10 },
-    fullName : { min : 1, max : 10 },
+    email    : { min : 1, max : 50 },
+    pass     : { min : 1, max : 50 },
+    fullName : { min : 1, max : 50 },
     type     : { min : 1, max : 1  },
 } ;
 
 const Item = {
-    name : { min : 1, max : 10 },
-    unit : { min : 1, max : 10 },
+    name : { min : 1, max : 50 },
+    unit : { min : 1, max : 5 },
 
 } ;
 
 const Seller = {
-    name : { min : 1, max : 10 },
+    name : { min : 1, max : 50 },
 } ;
 
 const Purchase = {
-    items : { min : 1, max : 20 },
+    items : { min : 1, max : 100 },
 } ;
 
 const Sale = {

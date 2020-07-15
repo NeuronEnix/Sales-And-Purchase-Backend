@@ -31,6 +31,7 @@
     "passport": "^0.4.1"
   },
   "devDependencies": {
+    "axios": "^0.19.2",
     "faker": "^4.1.0",
     "nodemon": "^2.0.4"
   }
