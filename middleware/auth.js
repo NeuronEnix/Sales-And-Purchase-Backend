@@ -48,8 +48,9 @@ module.exports.validateRefreshToken = async ( req, res, next ) => {
         req.user = user ;
         return next() ;
     } catch ( err ) { // Add invalid case 
-        // console.log( 'at valRef')
-        return respond.err( res, { err : errData.RefreshTokenExpired } ) ;
+        if ( err.name === 'JsonWebTokenError' ) return respond.err( res, { err : errData.invalidToken } ) ;
+        if ( err.name === 'TokenExpiredError' ) return respond.err( res, { err : errData.RefreshTokenExpired } ) ;
+        else                                    return respond.err( res, err ) ;
     }
 }
 module.exports.newAccessToken = ( user ) => {
@@ -62,7 +63,7 @@ module.exports.newRefreshToken = async ( res, user ) => {
     const RefreshToken = jwt.sign( {_id,Type,TS}, REFRESH_TOKEN_KEY, { expiresIn : REFRESH_TOKEN_EXPIRY } )
     res.cookie( 'RefreshToken',  RefreshToken, {
         maxAge   : REFRESH_TOKEN_MAX_AGE ,
-        httpOnly : true
+        httpOnly : true,
     }) ;
     return await userSave ;
 }
