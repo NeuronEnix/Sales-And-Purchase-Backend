@@ -5,7 +5,7 @@ const errData  = require( '../../response.js' ).errData ;
 const bcryptRounds = parseInt( process.env.BCRYPT_ROUNDS ) ;
 
 var userSchema = new mongoose.Schema ({
-    Email    : { type : String, unique : true },
+    Email    : { type : String, index: { unique: true } },
     Password : String,
     FullName : String,
     TS       : Date, // RefreshToken creation time

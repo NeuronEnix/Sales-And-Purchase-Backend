@@ -13,7 +13,7 @@ let itemSchema = new mongoose.Schema({
 }, { _id : false } ) ;
 
 let purchaseSchema = new mongoose.Schema ({
-    SellerID : { type : String, required : true, ref : 'sellers' } ,
+    SellerID : { type : String, required : true, ref : 'sellers', index : true } ,
     Items : { 
         type : [ itemSchema ], required : true
     }

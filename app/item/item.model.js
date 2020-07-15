@@ -3,7 +3,7 @@ const { errData } = require('../../response') ;
 
 var itemSchema = new mongoose.Schema ({
     UserID : { type : mongoose.Schema.Types.ObjectId, required : true },
-    Name : { type : String, unique : true    },
+    Name : { type : String, index: { unique: true } },
     Unit : String,
     Qty : Number
 });
