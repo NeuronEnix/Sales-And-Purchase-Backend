@@ -14,16 +14,20 @@ module.exports.err = ( resObj, err ) => {
             res = { code : err.err.code, err : err.err.err, info : err.info } ;
         else throw err ;
     } catch( error ) {
-        res = this.errData.unknownErr ;
+        if( err.type === 'entity.parse.failed' ) res = this.errData.jsonParseErr ;
+        else res = this.errData.unknownErr ;
         console.log( err ) ;
     } finally {
         console.log( { ID : resObj.ID, time : (new Date() - resObj._TS) + "ms", res : res, } ) ;
         resObj.status( 400 ).send( res ) ;
     }
 }
-
+module.exports.errHandler = ( err, req, res, next ) => { return this.err( res, err ) ; } ;
 module.exports.errData = {
-    unknownErr          : { code : -1 , err : 'Unknown Error!', info : 'Unknown Error - Inform Developer Immediately!' },
+
+    unknownErr          : { code : -1 , err : 'Unknown Error!',           info : 'Unknown Error - Inform Developer Immediately!' },
+    jsonParseErr        : { code : -2 , err : 'Incorrect JSON Structure', info : "Incorrect JSON Structure"                      },
+
     resNotFound         : { code : 1  , err : 'Resource Not Found'              },
     invalidToken        : { code : 2  , err : 'Invalid Token'                   },
     invalidCredential   : { code : 3  , err : 'Incorrect Credential'            },
@@ -34,6 +38,7 @@ module.exports.errData = {
     AccessTokenExpired  : { code : 8  , err : 'Access Token Expired'            },
     RefreshTokenExpired : { code : 9  , err : 'Refresh Token Expired'           },
     unAuthorized        : { code : 10 , err : 'Not Authorized'                  },
+    
 } ;
 
 module.exports.defRes = ( resObj, apiName ) => {
