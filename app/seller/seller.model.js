@@ -13,14 +13,14 @@ sellerSchema.statics.AddNewSeller = async ( sellerData ) => {
         return await seller.save() ;
     } catch( err ) {
         if ( err.code === 11000 )
-            throw { err : errData.duplicateErr, info : 'SellerName' };
+            throw { err : errData.duplicateErr, info : `Seller Name : ${ sellerData } ( Already Exist )`  };
         throw err ;
     }
 }
 
 sellerSchema.statics.getID = async ( sellerName ) => {
     const sellerID = await Seller.findOne( { Name : sellerName }, { _id : 1 } ) ;
-    if( !sellerID ) throw { err : errData.resNotFound, info : 'Seller Name' } ;
+    if( !sellerID ) throw { err : errData.resNotFound, info : `Seller Name : ${ sellerName } ( Doesn't exist in database. )/nPlease add the seller name in seller section if wish to create a new one.` } ;
     return sellerID;
 }
 
