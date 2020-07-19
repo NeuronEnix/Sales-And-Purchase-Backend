@@ -1,23 +1,24 @@
 const mongoose = require( 'mongoose' ) ;
 const errData  = require( '../../response.js' ).errData ;
 const Item = require( '../item/item.model.js' ) ;
-
+const objID = mongoose.Schema.Types.ObjectId ;
 let itemSchema = new mongoose.Schema({
     Name : { type : String, ref  : 'items', },
     Qty  : { type : Number, required : true, }
 }, { _id : false } ) ;
 
 let saleSchema = new mongoose.Schema ({
+    UserID   : { type : objID, required : true, index : true, ref : 'users'   } ,
     Items : { 
         type : [ itemSchema ], required : true
     }
 });
 
-saleSchema.statics.Create = async ( items ) => {
+saleSchema.statics.Create = async ( saleData ) => {
     try {
-        await Sale.ValidateAndUpdateItems( items ) ;
+        await Sale.ValidateAndUpdateItems( saleData.Items ) ;
         const sale = new Sale() ;
-        sale.Items = items ;
+        Object.assign( sale, saleData ) ;
         return await sale.save() ;
     } catch ( err ) {
         throw err ;
@@ -30,7 +31,7 @@ saleSchema.statics.ValidateAndUpdateItems = async ( ItemData ) => {
         const itemDoc = await Item.findOne( { Name : item.Name } , {Qty:1} ) ;
         if( !itemDoc )
             throw { 
-                err : errData.resNotFound, 
+                err  : errData.resNotFound, 
                 info : { Item : item.Name } 
             } ;
         if( item.Qty > itemDoc.Qty ) 
@@ -47,6 +48,10 @@ saleSchema.statics.ValidateAndUpdateItems = async ( ItemData ) => {
     itemList.forEach( item => {
         item.save() ;
     })
+}
+
+saleSchema.statics.List = async ( filter ) => {
+    return await Sale.find( filter, { UserID:0, __v:0  } ) ;
 }
 
 

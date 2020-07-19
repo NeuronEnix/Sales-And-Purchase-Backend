@@ -2,21 +2,17 @@ const mongoose = require( 'mongoose' ) ;
 const errData  = require( '../../response' ).errData ;
 const Seller   = require( '../seller/seller.model.js' ) ;
 const Item     = require( '../item/item.model.js' ) ;
-
+const { response } = require('express');
+const objID = mongoose.Schema.Types.ObjectId ;
 let itemSchema = new mongoose.Schema({
-    Name : {
-        type : String, ref  : 'items', required : true
-    },
-    Qty : {
-        type : Number, required : true
-    }
+    Name : { type : String, required : true, },
+    Qty  : { type : Number, required : true, },
 }, { _id : false } ) ;
 
 let purchaseSchema = new mongoose.Schema ({
-    SellerID : { type : String, required : true, ref : 'sellers', index : true } ,
-    Items : { 
-        type : [ itemSchema ], required : true
-    }
+    SellerID : { type : objID, required : true, index : true, ref : 'sellers' } ,
+    UserID   : { type : objID, required : true, index : true, ref : 'users'   } ,
+    Items    : { type : [ itemSchema ], required : true                       } ,
 });
 
 purchaseSchema.statics.Create = async ( purchaseData ) => {
@@ -33,7 +29,7 @@ purchaseSchema.statics.Create = async ( purchaseData ) => {
 }
 
 purchaseSchema.statics.ValidateAndUpdateItems = async ( ItemData ) => {
-    itemList = []
+    let itemList = []
     for( const item of ItemData ) {
         const itemDoc = await Item.findOne( { Name : item.Name } , {Qty:1} ) ;
         
@@ -50,6 +46,12 @@ purchaseSchema.statics.ValidateAndUpdateItems = async ( ItemData ) => {
         item.save() ;
     })
 }
+
+purchaseSchema.statics.List = async ( filter ) => {
+     await Purchase.find( filter, { _id:0, UserID:0, __v:0  } ) ;
+     throw { err : errData.unknownErr } ;
+}
+
 
 const Purchase = mongoose.model( 'purchases', purchaseSchema ) ;
 module.exports = Purchase;

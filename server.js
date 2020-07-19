@@ -2,6 +2,7 @@ require( 'dotenv' ).config() ; // Configures env vars ;
 const cors         = require( 'cors' ) ;
 const express      = require( 'express' ) ;
 const cookieParser = require( 'cookie-parser' ) ;
+                     require( 'express-async-errors' ) ;
 
 const App     = require( './app' ) ;
 const respond = require( './response.js' ) ;
@@ -17,6 +18,6 @@ const corsOptions = {
 
 }
 app.use( cookieParser(), cors( corsOptions ), express.json(), auth.authorize, App.router ) ;
-app.use(respond.errHandler);
-PORT = process.env.SERVER_PORT ;
+app.use( respond.errHandler ) ;
+const PORT = process.env.SERVER_PORT ;
 app.listen( PORT, () => { console.log( 'Listening on port ' + PORT ) } ) ;

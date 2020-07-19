@@ -22,7 +22,7 @@ module.exports.err = ( resObj, err ) => {
         resObj.status( 400 ).send( res ) ;
     }
 }
-module.exports.errHandler = ( err, req, res, next ) => { return this.err( res, err ) ; } ;
+module.exports.errHandler = ( err, req, res, next ) => { console.log('LOL Happened');return this.err( res, err ) ; } ;
 module.exports.errData = {
 
     unknownErr          : { code : -1 , err : 'Unknown Error!',           info : 'Unknown Error - Inform Developer Immediately!' },

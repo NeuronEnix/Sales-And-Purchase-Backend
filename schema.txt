@@ -42,10 +42,42 @@ sellers {
 purchases {
     _id :
     SellerID :
+    UserID : 
     Item : [ { Name : , Qty : }, { Name : , Qty : } ]
 }
 
 sales {
     _id :
+    UserID :
     Item : [ { Name : , Qty : }, { Name : , Qty : } ]
 }
+
+
+
+# Front-End
+
+SignUp :
+    - Add user  
+    - History
+        Self Added Users
+        Users Added by other Users
+    
+Item :
+    - Add
+    - Update
+    - History
+        Self Added/Updated Items
+        All Added/Updated Items ( All Users )
+
+Purchase :
+    - Create 
+    - History
+        Self Created/Updated Purchase - Should be able to Delete/Edit
+        All Created/Updated Purchase ( All Users )
+        
+Sale :
+    - Create 
+    - History
+        Self Created/Updated Sales - Should be able to Delete/Edit
+        All Created/Updated Sales ( All Users )        
+
