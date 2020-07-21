@@ -16,16 +16,12 @@ let purchaseSchema = new mongoose.Schema ({
 });
 
 purchaseSchema.statics.Create = async ( purchaseData ) => {
-    try {
-        const { SellerName , Items } = purchaseData ;
-        purchaseData.SellerID = await Seller.getID( SellerName ) ;        
-        await Purchase.ValidateAndUpdateItems( Items ) ;
-        const purchase = new Purchase() ;
-        Object.assign( purchase, purchaseData ) ;
-        return purchase.save() ;
-    } catch ( err ) {
-        throw err ;
-    }
+    const { SellerName, Items } = purchaseData ;
+    purchaseData.SellerID = await Seller.getID( SellerName ) ;        
+    await Purchase.ValidateAndUpdateItems( Items ) ;
+    const purchase = new Purchase() ;
+    Object.assign( purchase, purchaseData ) ;
+    return purchase.save() ;
 }
 
 purchaseSchema.statics.ValidateAndUpdateItems = async ( ItemData ) => {
@@ -35,8 +31,8 @@ purchaseSchema.statics.ValidateAndUpdateItems = async ( ItemData ) => {
         
         if( !itemDoc )
             throw { 
-                err : errData.resNotFound, 
-                info : { Item : item.Name } 
+                err  : errData.resNotFound, 
+                info : `Item : '${ item.Name }' does not exist. Please make an entry in 'Item Add section'.`,  
             } ;
         
         itemDoc.Qty += item.Qty ;
@@ -47,9 +43,8 @@ purchaseSchema.statics.ValidateAndUpdateItems = async ( ItemData ) => {
     })
 }
 
-purchaseSchema.statics.List = async ( filter ) => {
-     await Purchase.find( filter, { _id:0, UserID:0, __v:0  } ) ;
-     throw { err : errData.unknownErr } ;
+purchaseSchema.statics.List = async ( filter, project ) => {
+    return await Purchase.find( filter, project ) ;
 }
 
 

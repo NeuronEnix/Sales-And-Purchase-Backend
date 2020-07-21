@@ -32,7 +32,7 @@ saleSchema.statics.ValidateAndUpdateItems = async ( ItemData ) => {
         if( !itemDoc )
             throw { 
                 err  : errData.resNotFound, 
-                info : { Item : item.Name } 
+                info : `Item : ${ item.Name } does not exist. Please make an entry in "Item Add section".`,  
             } ;
         if( item.Qty > itemDoc.Qty ) 
             throw { 
@@ -50,8 +50,8 @@ saleSchema.statics.ValidateAndUpdateItems = async ( ItemData ) => {
     })
 }
 
-saleSchema.statics.List = async ( filter ) => {
-    return await Sale.find( filter, { UserID:0, __v:0  } ) ;
+saleSchema.statics.List = async ( filter, project ) => {
+    return await Sale.find( filter, project ) ;
 }
 
 

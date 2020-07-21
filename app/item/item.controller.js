@@ -2,55 +2,35 @@ const Item = require( './item.model.js' ) ;
 const respond = require( '../../response.js' ) ;
 const errData = respond.errData ;
 
-module.exports.add = async ( req, res, next ) => {
-    try {
-        req.body.UserID = req.UserID;
-        const itemData = req.body ;
-        await Item.AddNewItem( itemData ) ;
-        respond.ok( res ) ;
-        return next() ;
-    } catch ( err ) {
-        respond.err( res, err ) ;
-    }
+module.exports.add  = async ( req, res, next ) => {
+    const itemData  = req.body ;
+    itemData.UserID = req.UserID ;
+    await Item.AddNewItem( itemData ) ;
+    return respond.ok( res ) ;
 }
 
 module.exports.update = async ( req, res, next ) => {
-    try{
-        req.body.UserID = req.UserID ;
-        const itemData  = req.body ;
-        await Item.Update( itemData ) ;
-        respond.ok( res ) ;
-        return next() ;
-    } catch( err ) {
-        respond.err( res, err ) ;
-    }
+    const itemData    = req.body ;
+    itemData.UserID   = req.UserID ;
+    await Item.Update( itemData ) ;
+    return respond.ok( res ) ;
 }
 
 module.exports.detail = async ( req, res ) => {
-    try{
-        const itemName = req.body.Name ;
-        const item = await Item.Detail( itemName ) ;
-        respond.ok( res, item ) ;
-    } catch( err ) {
-        respond.err( res, err ) ;
-    }
+    const itemName = req.body.Name ;
+    const item = await Item.Detail( itemName ) ;
+    respond.ok( res, item ) ;
 }
 
-module.exports.search = ( req, res ) => {
+module.exports.search = async ( req, res ) => {
     const item = req.body.S ;
-    console.log( { search : item } ) ; //-Dev
-    if( !item ) return respond.ok( res, [] ) ;
-    Item.find(
-        { Name : { $regex : new RegExp( item ) } },
-        { _id : 0, Name : 1 } ,
-        function matchedResult ( err, data ) {
-            if ( err ) {
-                return respond.err( res, { err : errData.itemMatchErr } ) ;
-            } else {
-                return respond.ok( res, data ) ;
-            }
-        }
-    ).limit( 10 ) ;
+    let matchedItems = [] ; 
+    if( item )
+        matchedItems = await Item.find(
+                            { Name : { $regex : new RegExp( item ) } },
+                            { _id : 0, Name : 1 }
+                        ).limit( 10 ) ;
+    return respond.ok( res, matchedItems ) ;
 }
 
 

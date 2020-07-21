@@ -1,8 +1,8 @@
 const router = require( 'express' ).Router() ;
 
-const item     = require( './item.controller'   ) ;
-const logger   = require( './item.logger.js'    ) ;
-const validate = require( '../../validator.js'  ) ;
+const item     = require( './item.controller'  ) ;
+const logger   = require( './item.logger.js'   ) ;
+const validate = require( '../../validator.js' ) ;
 
 router.post( '/'       , validate.item.search , item.search                 ) ;
 router.post( '/add'    , validate.item.add    , item.add    , logger.add    ) ;

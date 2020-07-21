@@ -2,10 +2,10 @@ const mongoose = require( 'mongoose' ) ;
 const { errData } = require('../../response') ;
 
 var itemSchema = new mongoose.Schema ({
+    Name   : { type : String, index: { unique: true } },
+    Qty    : Number,
+    Unit   : String,
     UserID : { type : mongoose.Schema.Types.ObjectId, required : true },
-    Name : { type : String, index: { unique: true } },
-    Unit : String,
-    Qty : Number
 });
 
 itemSchema.statics.AddNewItem = async ( itemData ) => {
@@ -14,12 +14,12 @@ itemSchema.statics.AddNewItem = async ( itemData ) => {
         Object.assign( item, itemData ) ;
         return await item.save() ;
     } catch ( err ) {
-        if ( err.code === 11000 ){
-            throw { err : errData.duplicateErr, info : 'Item' } ;
-        }
+        if ( err.code === 11000 ) 
+            throw { err : errData.duplicateErr, info : `Item : ${itemData.Name} ( Already Exist )` } ;
         throw err ;
     }
 }
+
 itemSchema.statics.Update = async ( { Name, Unit, Qty } ) => {
 
     let fieldsToBeUpdated = {} ;
@@ -31,12 +31,12 @@ itemSchema.statics.Update = async ( { Name, Unit, Qty } ) => {
         { $set : fieldsToBeUpdated }
         ) ;
 
-    if ( updateStatus.n === 0 ) throw { err : errData.resNotFound, info : 'Item' } ; 
+    if ( updateStatus.n === 0 ) throw { err : errData.resNotFound, info : `Item : ${ Name } ( Not Found ). Please Add the Item before updating.` } ; 
 }
 
 itemSchema.statics.Detail = async ( itemName ) => {
-    const itemFound = await Item.find( { Name : itemName }, { _id : 0, __v : 0, UserID : 0 } ) ;
-    if ( !itemFound.length ) throw { err : errData.resNotFound, info : 'Item' } ;
+    const itemFound = await Item.findOne( { Name : itemName }, { _id : 0, __v : 0, UserID : 0 } ) ;
+    if ( !itemFound ) throw { err : errData.resNotFound, info : `Item : ${ itemName } ( Not Found ).` } ; 
     return itemFound ;
 }
 

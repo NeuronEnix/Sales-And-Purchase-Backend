@@ -4,25 +4,17 @@ const { newAccessToken, newRefreshToken } = require( '../../middleware/auth.js' 
 const { response } = require('express');
 
 module.exports.signup = async ( req, res ) => {
-    try {
-        req.body.UserID = req.UserID ;   // UserID of the person creating this account
-        const userData  = req.body ;
-        await User.AddNewUser( userData ) ;
-        respond.ok( res ) ;
-    } catch( err ) {
-        respond.err( res, err ) ;
-    }
+    const userData  = req.body ;
+    userData.UserID = req.UserID ;  // UserID of the person creating this account
+    await User.AddNewUser( userData ) ;
+    respond.ok( res ) ;
 }
 
 module.exports.login = async ( req, res ) => {
-    try {
-        const userCredential = req.body ;
-        const user = await User.LookUp( userCredential ) ;
-        await newRefreshToken( res, user ) ;
-        return respond.ok( res, { AccessToken : newAccessToken( user ), Type : user.Type } ) ;
-    } catch ( err ) {
-        respond.err( res, err ) ;
-    }
+    const userCredential = req.body ;
+    const user = await User.LookUp( userCredential ) ;
+    await newRefreshToken( res, user ) ;
+    return respond.ok( res, { AccessToken : newAccessToken( user ), Type : user.Type } ) ;
 }
 
 module.exports.logout = ( req, res ) => {

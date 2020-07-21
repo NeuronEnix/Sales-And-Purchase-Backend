@@ -13,7 +13,7 @@ sellerSchema.statics.AddNewSeller = async ( sellerData ) => {
         return await seller.save() ;
     } catch( err ) {
         if ( err.code === 11000 )
-            throw { err : errData.duplicateErr, info : `Seller Name : ${ sellerData } ( Already Exist )`  };
+            throw { err : errData.duplicateErr, info : `Seller Name : ${ sellerData.Name } ( Already Exist )`  };
         throw err ;
     }
 }

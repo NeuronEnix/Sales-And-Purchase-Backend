@@ -1,20 +1,26 @@
+const respond  = require( '../../response.js'   ) ;
 const Purchase = require( './purchase.model.js' ) ;
-const respond = require( '../../response.js' ) ;
 
 module.exports.create = async ( req, res ) => {
-    try{
-        const purchaseData = req.body ;
-        purchaseData.UserID = req.UserID ;
-        await Purchase.Create( purchaseData ) ;
-        respond.ok( res ) ;
-    } catch ( err ) {
-        respond.err( res, err ) ;
-    }
+    const purchaseData = req.body ;
+    purchaseData.UserID = req.UserID ;
+    await Purchase.Create( purchaseData ) ;
+    return respond.ok( res ) ;
+}
+
+module.exports.detail = async ( req, res ) => {
+    const filter  = req.body ;
+    const project = { _id:0, Items:1 } ;
+    return respond.ok( res, await Purchase.findOne( filter , project ) ) ;
+}
+
+module.exports.listMy = async ( req, res ) => {
+    const filter  = { UserID:req.UserID } ;
+    const project = { _id:1 } ;
+    return respond.ok( res, await Purchase.List( filter, project ) ) ;
 }
 
 module.exports.listAll = async ( req, res ) => {
-    return respond.ok( res, await Purchase.List() ) ;
-}
-module.exports.listMy = async ( req, res ) => {
-    return respond.ok( res, await Purchase.List( { UserID:req.UserID } ) ) ;
+    const project = { _id:1 } ;
+    return respond.ok( res, await Purchase.List( {}, project ) ) ;
 }
