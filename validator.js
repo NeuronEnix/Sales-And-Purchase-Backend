@@ -25,7 +25,8 @@ module.exports = {
     },
 
     seller : {
-        add     : ( req, res, next ) => { validator( req, res, next, seller.add ) },
+        add     : ( req, res, next ) => { validator( req, res, next, seller.add    ) },
+        search  : ( req, res, next ) => { validator( req, res, next, seller.search ) },
     },
 
     sale : {

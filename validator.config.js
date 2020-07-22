@@ -85,6 +85,11 @@ module.exports.seller = {
         Name : Joi.string().trim().min( Seller.name.min ).max( Seller.name.max ).required(),
     }),
 
+    search : Joi.object({
+        S : Joi.string().trim().min( Seller.name.min ).max( Seller.name.max ).required(),
+    }),
+    
+
 } ;
 
 // ---------- Purchase ---------- //
