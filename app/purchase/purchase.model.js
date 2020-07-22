@@ -34,8 +34,7 @@ purchaseSchema.statics.ValidateAndUpdateItems = async ( ItemData ) => {
                 err  : errData.resNotFound, 
                 info : `Item : '${ item.Name }' does not exist. Please make an entry in 'Item Add section'.`,  
             } ;
-        
-        itemDoc.Qty += item.Qty ;
+        itemDoc.Qty += parseInt( item.Qty ) ;
         itemList.push( itemDoc ) ;
     }
     itemList.forEach( item => {
