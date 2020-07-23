@@ -2,7 +2,6 @@ const respond = require( './response.js' ) ;
 const errData = respond.errData ;
 
 const { user, item, seller, purchase, sale } = require( './validator.config.js' ) ;
-const { response } = require('express');
 
 const validator = async ( req, res, next, schema ) => {
     try { await schema.validateAsync( req.body ) ; return next() ; }
@@ -18,26 +17,26 @@ module.exports = {
     }, 
 
     item : {
-        add     : ( req, res, next ) => { validator( req, res, next, item.add    ) },
-        search  : ( req, res, next ) => { validator( req, res, next, item.search ) },
-        detail  : ( req, res, next ) => { validator( req, res, next, item.detail ) },
-        update  : ( req, res, next ) => { validator( req, res, next, item.update ) },
+        add    : ( req, res, next ) => { validator( req, res, next, item.add    ) },
+        search : ( req, res, next ) => { validator( req, res, next, item.search ) },
+        detail : ( req, res, next ) => { validator( req, res, next, item.detail ) },
+        update : ( req, res, next ) => { validator( req, res, next, item.update ) },
     },
 
     seller : {
-        add     : ( req, res, next ) => { validator( req, res, next, seller.add    ) },
-        search  : ( req, res, next ) => { validator( req, res, next, seller.search ) },
+        add    : ( req, res, next ) => { validator( req, res, next, seller.add    ) },
+        search : ( req, res, next ) => { validator( req, res, next, seller.search ) },
     },
 
     sale : {
         create  : ( req, res, next ) => { validator( req, res, next, sale.create  ) },
-        // listAll : ( req, res, next ) => { validator( req, res, next, sale.listAll ) },
-        // listMy  : ( req, res, next ) => { validator( req, res, next, sale.listMy  ) },
+        listAll : ( req, res, next ) => { validator( req, res, next, sale.listAll ) },
+        listMy  : ( req, res, next ) => { validator( req, res, next, sale.listMy  ) },
     },
 
     purchase : {
         create  : ( req, res, next ) => { validator( req, res, next, purchase.create  ) },
-        // listAll : ( req, res, next ) => { validator( req, res, next, purchase.listAll ) },
-        // listMy  : ( req, res, next ) => { validator( req, res, next, purchase.listMy  ) },
+        listAll : ( req, res, next ) => { validator( req, res, next, purchase.listAll ) },
+        listMy  : ( req, res, next ) => { validator( req, res, next, purchase.listMy  ) },
     },
 }
