@@ -12,7 +12,7 @@ let itemSchema = new mongoose.Schema({
 let purchaseSchema = new mongoose.Schema ({
     SellerID : { type : objID, required : true, index : true, ref : 'sellers' } ,
     UserID   : { type : objID, required : true, index : true, ref : 'users'   } ,
-    Items    : { type : [ itemSchema ], required : true                       } ,
+    Items    : { type : [ itemSchema ], required : true                                },
 });
 
 purchaseSchema.statics.Create = async ( purchaseData ) => {
@@ -42,8 +42,8 @@ purchaseSchema.statics.ValidateAndUpdateItems = async ( ItemData ) => {
     })
 }
 
-purchaseSchema.statics.List = async ( filter, project ) => {
-    return await Purchase.find( filter, project ) ;
+purchaseSchema.statics.List = async ( filter, project, pageNo ) => {
+    return await Purchase.find( filter, project ).skip( 10*pageNo ).limit( 10 ) ;
 }
 
 

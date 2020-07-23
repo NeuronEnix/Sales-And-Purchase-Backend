@@ -99,6 +99,15 @@ module.exports.purchase = {
         SellerName : Joi.string().trim().min( Seller.name.min ).max( Seller.name.max ).required(),
         Items      : Joi.array().items( itemNameQtyPair ).min( Purchase.items.min ).max( Purchase.items.max ).required(),
     }),
+
+    listMy : Joi.object({
+        P : Joi.number().required()
+    }),
+    
+    listAll : Joi.object({
+        P : Joi.number().required()
+    }),
+
 } ;
 
 // ---------- Sale ---------- //
@@ -108,6 +117,14 @@ module.exports.sale = {
         Items : Joi.array().items( itemNameQtyPair ).min( Sale.items.min ).max( Sale.items.max ).required(),
     }),
 
+    listMy : Joi.object({
+        P : Joi.number().required()
+    }),
+    
+    listAll : Joi.object({
+        P : Joi.number().required()
+    }),
+    
 } ;
 
 module.exports.auth = {
