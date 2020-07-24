@@ -4,6 +4,6 @@ const validate = require( '../../validator.js' ) ;
 
 router.post( '/login'  , validate.user.login  , user.login  ) ;
 router.post( '/signup' , validate.user.signup , user.signup ) ;
-router.post( '/logout' ,                        user.logout ) ;
+router.post( '/logout' , validate.user.logout , user.logout ) ;
 
 module.exports.router = router
