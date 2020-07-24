@@ -15,7 +15,7 @@ module.exports.detail = async ( req, res ) => {
 }
 
 module.exports.listMy = async ( req, res ) => {
-    const pageNo = req.body.P;
+    const pageNo  = req.body.P;
     const filter  = { UserID:req.UserID } ;
     const project = { _id:1 } ;
     const doc = await Purchase.List( filter, project, pageNo ) ;
@@ -43,7 +43,6 @@ module.exports.listAll = async ( req, res ) => {
             ItemCount : 34,
         })
     }
-    
     return respond.ok( res, data ) ;
 }
 

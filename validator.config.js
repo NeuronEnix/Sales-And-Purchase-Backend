@@ -2,53 +2,46 @@ const Joi = require( '@hapi/joi' ) ;
 
 //////////////////////////////////////////////
 // Min - Max
-const User = {
-    email    : { min : 1, max : 50 },
-    pass     : { min : 1, max : 50 },
-    fullName : { min : 1, max : 50 },
-    type     : { min : 1, max : 1  },
+const userSchema = {
+    email    : Joi.string().trim().min( 1 ).max( 50 ).required(),
+    pass     : Joi.string().trim().min( 1 ).max( 50 ).required(),
+    fullName : Joi.string().trim().min( 1 ).max( 50 ).required(),
+    type     : Joi.string().trim().min( 1 ).max( 1  ).required(),
 } ;
 
-const Item = {
-    name : { min : 1, max : 50 },
-    unit : { min : 1, max : 5 },
-
+const itemSchema = {
+    name : Joi.string().trim().min( 1 ).max( 50 ).required(),
+    unit : Joi.string().trim().min( 1 ).max( 3  ).required(),
+    qty  : Joi.number().positive().required(),
 } ;
 
-const Seller = {
-    name : { min : 1, max : 50 },
+const sellerSchema = {
+    name : Joi.string().trim().min( 1 ).max( 50 ).required(),
 } ;
-
-const Purchase = {
-    items : { min : 1, max : 100 },
-} ;
-
-const Sale = {
-    items : Purchase.items,
-} ;
-//////////////////////////////////////////////
 
 // ---------- Common Schema ---------- //
-const itemNameQtyPair = Joi.object({
-    Name : Joi.string().trim().min( Item.name.min ).max( Item.name.max ).required(),
-    Qty  : Joi.number().positive().required(),
-}) ;
+const itemNameQtyPairSchema = Joi.array().items(
+    Joi.object({
+        Name : itemSchema.name,
+        Qty  : itemSchema.qty,
+    })
+).min( 1 ).max( 50 ).required() ;
 
 // ---------- User ---------- //
 module.exports.user = {
     
     login : Joi.object({
-        Email    : Joi.string().trim().min( User.email.min ).max( User.email.max ).required(),
-        Password : Joi.string().trim().min( User.pass.min  ).max( User.pass.max  ).required(),
+        Email    : userSchema.email,
+        Password : userSchema.pass,
     }),
 
     logout : Joi.forbidden(),
 
     signup : Joi.object({
-        FullName : Joi.string().trim().min( User.fullName.min ).max( User.fullName.max ).required(),
-        Email    : Joi.string().trim().min( User.email.min    ).max( User.email.max    ).required(),
-        Password : Joi.string().trim().min( User.pass.min     ).max( User.pass.max     ).required(),
-        Type     : Joi.string().trim().min( User.type.min     ).max( User.type.max     ).required(),
+        FullName : userSchema.fullName,
+        Email    : userSchema.email,
+        Password : userSchema.pass,
+        Type     : userSchema.type,
     }),
 
 } ;
@@ -57,23 +50,23 @@ module.exports.user = {
 module.exports.item = {
 
     add : Joi.object({
-        Name : Joi.string().trim().min( Item.name.min ).max( Item.name.max ).required(),
-        Unit : Joi.string().trim().min( Item.unit.min ).max( Item.unit.max ).required(),
-        Qty  : Joi.number().positive().required(),
+        Name : itemSchema.name,
+        Unit : itemSchema.unit,
+        Qty  : itemSchema.qty,
     }),
 
     search : Joi.object({
-        S : Joi.string().trim().min( Item.name.min ).max( Item.name.max ).required(),
+        S : itemSchema.name,
     }),
 
     detail : Joi.object({
-        Name : Joi.string().trim().min( Item.name.min ).max( Item.name.max ).required(),
+        Name : itemSchema.name,
     }),
 
     update : Joi.object({
-        Name : Joi.string().trim().min( Item.name.min ).max( Item.name.max ).required(),
-        Unit : Joi.string().trim().min( Item.unit.min ).max( Item.unit.max ).required(),
-        Qty  : Joi.number().positive().required(),
+        Name : itemSchema.name,
+        Unit : itemSchema.unit,
+        Qty  : itemSchema.qty,
     }).or( 'Unit', 'Qty' ),
 
 } ;
@@ -82,24 +75,31 @@ module.exports.item = {
 module.exports.seller = {
 
     add : Joi.object({
-        Name : Joi.string().trim().min( Seller.name.min ).max( Seller.name.max ).required(),
+        Name : sellerSchema.name,
     }),
 
     search : Joi.object({
-        S : Joi.string().trim().min( Seller.name.min ).max( Seller.name.max ).required(),
+        S : sellerSchema.name,
     }),
     
-
 } ;
 
 // ---------- Purchase ---------- //
 module.exports.purchase = {
 
     create : Joi.object({
-        SellerName : Joi.string().trim().min( Seller.name.min ).max( Seller.name.max ).required(),
-        Items      : Joi.array().items( itemNameQtyPair ).min( Purchase.items.min ).max( Purchase.items.max ).required(),
+        SellerName : sellerSchema.name,
+        Items      : itemNameQtyPairSchema,
+    }),
+    
+    detail : Joi.object({
+        _id: Joi.string().length(24)
     }),
 
+    delete : Joi.object({
+        _id: Joi.string().length(24)
+    }),
+    
     listMy : Joi.object({
         P : Joi.number().required()
     }),
@@ -114,15 +114,15 @@ module.exports.purchase = {
 module.exports.sale = {
 
     create : Joi.object({
-        Items : Joi.array().items( itemNameQtyPair ).min( Sale.items.min ).max( Sale.items.max ).required(),
+        Items : itemNameQtyPairSchema
     }),
 
     listMy : Joi.object({
-        P : Joi.number().required()
+        P : Joi.number().positive().required()
     }),
     
     listAll : Joi.object({
-        P : Joi.number().required()
+        P : Joi.number().positive().required()
     }),
     
 } ;
@@ -130,4 +130,4 @@ module.exports.sale = {
 module.exports.auth = {
     refreshToken : Joi.forbidden(),
     accessToken  : Joi.forbidden(),
-}
+} ;

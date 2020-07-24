@@ -35,7 +35,7 @@ itemSchema.statics.Update = async ( { Name, Unit, Qty } ) => {
 }
 
 itemSchema.statics.Detail = async ( itemName ) => {
-    const itemFound = await Item.findOne( { Name : itemName }, { _id : 0, __v : 0, UserID : 0 } ) ;
+    const itemFound = await Item.findOne( { Name : itemName }, { _id : 0, Qty:1, Unit:1 } ) ;
     if ( !itemFound ) throw { err : errData.resNotFound, info : `Item : ${ itemName } ( Not Found ).` } ; 
     return itemFound ;
 }
