@@ -36,6 +36,8 @@ module.exports = {
 
     purchase : {
         create  : ( req, res, next ) => { validator( req, res, next, purchase.create  ) },
+        update  : ( req, res, next ) => { validator( req, res, next, purchase.update  ) },
+        delete  : ( req, res, next ) => { validator( req, res, next, purchase.delete  ) },
         listAll : ( req, res, next ) => { validator( req, res, next, purchase.listAll ) },
         listMy  : ( req, res, next ) => { validator( req, res, next, purchase.listMy  ) },
     },
