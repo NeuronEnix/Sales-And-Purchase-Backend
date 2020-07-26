@@ -11,7 +11,7 @@ const userSchema = {
 
 const itemSchema = {
     name : Joi.string().trim().min( 1 ).max( 50 ).required(),
-    unit : Joi.string().trim().min( 1 ).max( 3  ).required(),
+    unit : Joi.string().trim().min( 1 ).max( 5  ).required(),
     qty  : Joi.number().positive().required(),
 } ;
 
@@ -20,12 +20,20 @@ const sellerSchema = {
 } ;
 
 // ---------- Common Schema ---------- //
-const itemNameQtyPairSchema = Joi.array().items(
-    Joi.object({
-        Name : itemSchema.name,
-        Qty  : itemSchema.qty,
-    })
-).min( 1 ).max( 50 ).required() ;
+const commonSchema = {
+
+    _id : Joi.string().length(24).required(),
+
+    itemNameQtyPair : Joi.array().items(
+        Joi.object({
+            Name : itemSchema.name,
+            Qty  : itemSchema.qty,
+        })
+    ).min( 1 ).max( 50 ).required(),
+
+    pageNo : Joi.number().required(),
+
+}
 
 // ---------- User ---------- //
 module.exports.user = {
@@ -89,23 +97,29 @@ module.exports.purchase = {
 
     create : Joi.object({
         SellerName : sellerSchema.name,
-        Items      : itemNameQtyPairSchema,
+        Items      : commonSchema.itemNameQtyPair,
+    }),
+    
+    update : Joi.object({
+        _id : commonSchema._id,
+        SellerName : sellerSchema.name,
+        Items : commonSchema.itemNameQtyPair,
     }),
     
     detail : Joi.object({
-        _id: Joi.string().length(24)
+        _id: commonSchema._id
     }),
 
     delete : Joi.object({
-        _id: Joi.string().length(24)
+        _id: commonSchema._id
     }),
     
     listMy : Joi.object({
-        P : Joi.number().required()
+        P : commonSchema.pageNo
     }),
     
     listAll : Joi.object({
-        P : Joi.number().required()
+        P : commonSchema.pageNo
     }),
 
 } ;
@@ -114,15 +128,28 @@ module.exports.purchase = {
 module.exports.sale = {
 
     create : Joi.object({
-        Items : itemNameQtyPairSchema
+        Items : commonSchema.itemNameQtyPair
+    }),
+    
+    update : Joi.object({
+        _id : commonSchema._id,
+        Items : commonSchema.itemNameQtyPair,
     }),
 
+    detail : Joi.object({
+        _id: commonSchema._id
+    }),
+
+    delete : Joi.object({
+        _id: commonSchema._id
+    }),
+    
     listMy : Joi.object({
-        P : Joi.number().positive().required()
+        P : commonSchema.pageNo
     }),
     
     listAll : Joi.object({
-        P : Joi.number().positive().required()
+        P : commonSchema.pageNo
     }),
     
 } ;

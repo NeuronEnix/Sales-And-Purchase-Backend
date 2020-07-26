@@ -30,12 +30,18 @@ module.exports = {
 
     sale : {
         create  : ( req, res, next ) => { validator( req, res, next, sale.create  ) },
+        detail  : ( req, res, next ) => { validator( req, res, next, sale.detail  ) },
+        update  : ( req, res, next ) => { validator( req, res, next, sale.update  ) },
+        delete  : ( req, res, next ) => { validator( req, res, next, sale.delete  ) },
         listAll : ( req, res, next ) => { validator( req, res, next, sale.listAll ) },
         listMy  : ( req, res, next ) => { validator( req, res, next, sale.listMy  ) },
     },
 
     purchase : {
         create  : ( req, res, next ) => { validator( req, res, next, purchase.create  ) },
+        detail  : ( req, res, next ) => { validator( req, res, next, purchase.detail  ) },
+        update  : ( req, res, next ) => { validator( req, res, next, purchase.update  ) },
+        delete  : ( req, res, next ) => { validator( req, res, next, purchase.delete  ) },
         listAll : ( req, res, next ) => { validator( req, res, next, purchase.listAll ) },
         listMy  : ( req, res, next ) => { validator( req, res, next, purchase.listMy  ) },
     },
