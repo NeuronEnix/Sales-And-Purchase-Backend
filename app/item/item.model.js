@@ -12,6 +12,10 @@ itemSchema.statics.AddNewItem = async ( itemData ) => {
     try {
         const item = new Item() ;
         Object.assign( item, itemData ) ;
+
+        // For 'Logging' where itemData is update before passing it logger in 'item.controller.js'
+        itemData.LogQty = { Old:0, New:itemData.Qty };
+
         return await item.save() ;
     } catch ( err ) {
         if ( err.code === 11000 ) 

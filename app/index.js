@@ -15,6 +15,9 @@ router.use( '/sale', sale.router ) ;
 const purchase = require( './purchase/purchase.router.js' ) ;
 router.use( '/purchase', purchase.router ) ;
 
+const stock = require( './stock/stock.router.js' ) ;
+router.use( '/stock', stock.router ) ;
+
 const auth = require( '../middleware/auth.js' ) ;
 router.use( '/auth' , auth.validateRefreshToken, auth.router ) ;
 

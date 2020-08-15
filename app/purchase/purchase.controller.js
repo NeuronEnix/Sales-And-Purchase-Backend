@@ -1,12 +1,19 @@
-const respond  = require( '../../response.js'   ) ;
-const Purchase = require( './purchase.model.js' ) ;
+const User       = require( '../user/user.model.js'  ) ;
+const respond    = require( '../../response.js'      ) ;
+const Purchase   = require( './purchase.model.js'    ) ;
+const ItemLogger = require( '../item/item.logger.js' ) ;
 
 module.exports.create = async ( req, res ) => {
     const purchaseData = req.body ;
     purchaseData.UserID = req.UserID ;
-    await Purchase.Create( purchaseData ) ;
-    return respond.ok( res ) ;
+    const purchase = await Purchase.Create( purchaseData ) ;
+    respond.ok( res ) ;
+
+    purchaseData.PurchaseID = purchase._id ;
+    ItemLogger.ItemPurchased( purchaseData ) ;
+
 }
+
 
 module.exports.detail = async ( req, res ) => {
     const filter  = req.body ;
@@ -19,8 +26,8 @@ module.exports.listMy = async ( req, res ) => {
     const filter  = { UserID:req.UserID } ;
     const project = { _id:1 } ;
     const doc = await Purchase.List( filter, project, pageNo ) ;
-    data = [];
-    for( d of doc ) {
+    let data = [];
+    for( let d of doc ) {
         data.push({
             _id:d._id,
             SellerName : 'Seller'+pageNo,
@@ -32,15 +39,18 @@ module.exports.listMy = async ( req, res ) => {
 
 module.exports.listAll = async ( req, res ) => {
     const pageNo = req.body.P;
-    const project = { _id:1 } ;
+    const project = { _id:1, UserID:1, Items:1 } ;
     let doc = await Purchase.List( {}, project, pageNo )
-    data = [];
-    for( d of doc ) {
+    let data = [];
+    
+    for( let d of doc ) {
+        if(!d.UserID)continue;
+        console.log( d )
         data.push({
             _id:d._id,
-            UserName : 'User1',
+            UserName : (await User.findOne({_id:d.UserID},{_id:0,FullName:1})).FullName,
             SellerName : 'Seller'+pageNo,
-            ItemCount : 34,
+            ItemCount : d.Items.length,
         })
     }
     return respond.ok( res, data ) ;

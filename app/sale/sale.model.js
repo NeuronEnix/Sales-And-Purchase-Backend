@@ -15,18 +15,14 @@ let saleSchema = new mongoose.Schema ({
 });
 
 saleSchema.statics.Create = async ( saleData ) => {
-    try {
         await Sale.ValidateAndUpdateItems( saleData.Items ) ;
         const sale = new Sale() ;
         Object.assign( sale, saleData ) ;
         return await sale.save() ;
-    } catch ( err ) {
-        throw err ;
-    }
 }
 
 saleSchema.statics.ValidateAndUpdateItems = async ( ItemData ) => {
-    itemList = []
+    const itemList = []
     for( const item of ItemData ) {
         const itemDoc = await Item.findOne( { Name : item.Name } , {Qty:1} ) ;
         if( !itemDoc )
@@ -42,7 +38,16 @@ saleSchema.statics.ValidateAndUpdateItems = async ( ItemData ) => {
                     AvailableQty  : itemDoc.Qty
                 }
             } ;
+
+        // For 'Logging' where itemData is update before passing it logger in 'sale.controller.js'
+        item.LogQty={};
+        item.LogQty.Old = itemDoc.Qty ;
+
         itemDoc.Qty -= item.Qty ;
+
+        // For 'Logging' where itemData is update before passing it logger in 'sale.controller.js'
+        item.LogQty.New = itemDoc.Qty ;
+
         itemList.push( itemDoc ) ;
     }
     itemList.forEach( item => {

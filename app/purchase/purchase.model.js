@@ -34,7 +34,15 @@ purchaseSchema.statics.ValidateAndUpdateItems = async ( ItemData ) => {
                 err  : errData.resNotFound, 
                 info : `Item : '${ item.Name }' does not exist. Please make an entry in 'Item Add section'.`,  
             } ;
+        // For 'Logging' where itemData is update before passing it logger in 'purchase.controller.js'
+        item.LogQty={};
+        item.LogQty.Old = itemDoc.Qty ;
+
         itemDoc.Qty += parseInt( item.Qty ) ;
+
+        // For 'Logging' where itemData is update before passing it logger in 'purchase.controller.js'
+        item.LogQty.New = itemDoc.Qty ;
+            
         itemList.push( itemDoc ) ;
     }
     itemList.forEach( item => {

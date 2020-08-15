@@ -1,25 +1,33 @@
-const Item = require( './item.model.js' ) ;
-const respond = require( '../../response.js' ) ;
-const errData = respond.errData ;
+const Item       = require( './item.model.js'   ) ;
+const respond    = require( '../../response.js' ) ;
+const ItemLogger = require( './item.logger.js'  ) ;
 
 module.exports.add  = async ( req, res, next ) => {
     const itemData  = req.body ;
     itemData.UserID = req.UserID ;
     await Item.AddNewItem( itemData ) ;
-    return respond.ok( res ) ;
+
+    respond.ok( res ) ;
+    ItemLogger.ItemAdded( itemData ) ;
+
+    return next() ;
 }
 
 module.exports.update = async ( req, res, next ) => {
     const itemData    = req.body ;
     itemData.UserID   = req.UserID ;
     await Item.Update( itemData ) ;
-    return respond.ok( res ) ;
+    respond.ok( res ) ;
+
+    return next();
 }
 
-module.exports.detail = async ( req, res ) => {
+module.exports.detail = async ( req, res, next ) => {
     const itemName = req.body.Name ;
     const item = await Item.Detail( itemName ) ;
     respond.ok( res, item ) ;
+    
+    return next();
 }
 
 module.exports.search = async ( req, res ) => {
@@ -30,7 +38,9 @@ module.exports.search = async ( req, res ) => {
                             { Name : { $regex : new RegExp( item ) } },
                             { _id : 0, Name : 1 }
                         ).limit( 10 ) ;
-    return respond.ok( res, matchedItems ) ;
+    respond.ok( res, matchedItems ) ;
+    
+    return next();
 }
 
 
