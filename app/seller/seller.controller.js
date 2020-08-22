@@ -8,13 +8,23 @@ module.exports.add = async ( req, res ) => {
         respond.ok( res ) ;
 }
 
-module.exports.search = async ( req, res ) => {
-        const sellerName = req.body.S ;
-        let matchedNames = [] ; 
-        if( sellerName )
-            matchedNames = await Seller.find(
-                                { Name : { $regex : new RegExp( sellerName ) } },
-                                { _id : 0, Name : 1 }
-                            ).limit( 10 ) ;
-        return respond.ok( res, matchedNames ) ;
-    }
+module.exports.search = async ( req, res, next ) => {
+    const sellerName = req.query.SellerName ;
+    const regExSellerName = ".*" + sellerName.split("").join( ".*" ) + ".*" ; 
+    const sellerNameList = await Seller.aggregate([
+        { $match : { Name : new RegExp( regExSellerName ) } },
+        { $project: { Name:1 } },
+        { $sort:{ Name:1 } },
+        { $limit: 10 } ,
+        {
+            $group : {
+                _id: null,
+                SellerNames : { $push :  "$Name" }
+            }
+        },
+        { $project: { _id:0 } },
+    ])
+
+    respond.ok( res, sellerNameList[0] ) ;
+    return next() ;
+} ;

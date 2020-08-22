@@ -44,7 +44,18 @@ purchases {
     _id :
     SellerID :
     UserID : 
-    Item : [ { Name : , Qty : }, { Name : , Qty : } ]
+    CreatedAt :
+    Items: {
+        i1: 10, // -> ItemName: Qty
+        i2: 110
+    }
+    Edits : [
+        CreatedAt:
+        Items: {
+            i1: 10, // -> ItemName: Qty
+            i2: 110
+        }
+    ]
 }
 
 sales {

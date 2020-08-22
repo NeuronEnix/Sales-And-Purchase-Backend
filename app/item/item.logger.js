@@ -2,7 +2,6 @@ const ItemQtyLogger = require( './log/item.qty.log.js' ) ;
 
 module.exports.ItemAdded = async ( itemData ) => {
     const log = new ItemQtyLogger() ;
-    console.log( itemData)
     Object.assign( log, {
         Type : 'add',
         Item : itemData.Name,
