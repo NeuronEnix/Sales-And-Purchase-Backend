@@ -3,8 +3,8 @@ const sale   = require( './sale.controller.js' ) ;
 const validate = require( '../../validator.js' ) ;
 
 router.get( '/detail'      , sale.detail  ) ;
-router.get( '/edit-detail' , sale.editDetail  ) ;
 router.get( '/list'        , sale.list  ) ;
+router.get( '/list-edits'  , sale.editDetail  ) ;
 
 router.post( '/create'  , validate.sale.create  , sale.create  ) ;
 router.post( '/update'  , validate.sale.update  , sale.update  ) ;

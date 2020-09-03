@@ -13,7 +13,6 @@ let saleSchema = new mongoose.Schema ({
 });
 
 saleSchema.statics.Create = async ( saleData ) => {
-    
     await Item.DecItemQty( saleData.Items ) ;
 
     const sale = new Sale() ;
@@ -23,7 +22,8 @@ saleSchema.statics.Create = async ( saleData ) => {
 }
 
 saleSchema.statics.Update = async ( saleUpdateData ) => {
-
+    
+    
     const saleDoc = await Sale.findById( saleUpdateData.SaleID ) ;
     await Item.IncItemQty( saleDoc.Items ) ;  
 
@@ -42,6 +42,40 @@ saleSchema.statics.Update = async ( saleUpdateData ) => {
 
     Object.assign( saleDoc, saleUpdateData ) ;
     return await saleDoc.save() ;
+
+    // Optimize incomplete
+    // let is_update_ok = function lo( avail_item_qty, old_sal_data, new_sal_data ) {
+
+    //     for( const item_qty_pair of avail_item_qty ) {
+    //         const item_name = item_qty_pair.Name ;
+    //         const available_item_qty = item_qty_pair.Qty ;
+    //         if ( available_item_qty + old_sal_data[ item_name ] - new_sal_data[ item_name ] < 0 )
+    //             return false;
+    //     }
+    //     return true ;
+    // }
+
+    // const oid = mongoose.Types.ObjectId ;
+
+    // const aggregateList = [
+    //     { $match: { _id: oid( saleUpdateData.SaleID ) } },
+    //     {
+    //         $lookup : {
+    //             from : "items",
+    //             let : { "i_list" : { $objectToArray : "$Items"} },
+    //             pipeline : [
+    //                 { $match :{ $expr : { $in : [ "$Name", "$$i_list.k"] } } },
+    //                 { $project : { _id:0, Name:1, Qty:1 } },
+    //                 // { $set: { "$$i_list" : [] } },
+    //             ],
+    //             as : "avail_item_qty"
+    //         },
+    //     },
+    //     { $addFields : { update_ok: is_update_ok( "") } },
+    //     { $project : { Edits:0 } }
+    // ]
+    // return await Sale.aggregate( aggregateList ) ;
+
 
 }
 

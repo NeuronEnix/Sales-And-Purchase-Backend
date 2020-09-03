@@ -3,8 +3,8 @@ const purchase = require( './purchase.controller.js' ) ;
 const validate = require( '../../validator.js' ) ;
 
 router.get( '/detail'      , purchase.detail  ) ;
-router.get( '/edit-detail' , purchase.editDetail  ) ;
 router.get( '/list'        , purchase.list  ) ;
+router.get( '/list-edits'  , purchase.editDetail  ) ;
 
 router.post( '/create' , validate.purchase.create  , purchase.create ) ;
 router.post( '/update' , validate.purchase.update  , purchase.update ) ;
