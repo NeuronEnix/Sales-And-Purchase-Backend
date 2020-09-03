@@ -117,6 +117,16 @@ saleSchema.statics.List = async ( PageNo, UserID ) => {
     return await Sale.aggregate( aggregateList ) ; 
 }
 
+saleSchema.statics.Delete = async ( SaleID ) => {
+    const saleDoc = await Sale.findById( SaleID ) ;
+    console.log( saleDoc )
+    if ( !saleDoc ) 
+        throw { err : errData.resNotFound, info: 'Invalid SaleID' } ;
+
+    await Item.IncItemQty( saleDoc.Items ) ;
+    await Sale.findOneAndDelete( SaleID ) ;
+}
+
 
 const Sale = mongoose.model( 'sales', saleSchema ) ;
 module.exports = Sale;

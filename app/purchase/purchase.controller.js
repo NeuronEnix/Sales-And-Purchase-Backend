@@ -55,14 +55,10 @@ module.exports.list = async ( req, res, next ) => {
     return next() ;
 }
 
-module.exports.delete = async ( req, res ) => { 
+module.exports.delete = async ( req, res, next ) => { 
     const { PurchaseID } = req.body ; 
-    const deletedDoc = await Purchase.findByIdAndDelete( PurchaseID ) ;
+    await Purchase.Delete( PurchaseID ) ;
 
-    if ( deletedDoc )
-        respond.ok( res ) ;
-    else {
-        respond.err( res, { err : errData.resNotFound, info: 'Invalid PurchaseID' }) ;
-    }
-
+    respond.ok( res ) ;
+    return next() ;
 }

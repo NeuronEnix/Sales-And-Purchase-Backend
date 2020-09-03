@@ -39,6 +39,7 @@ module.exports.verifyToken = ( req, res, next ) => {
         const AccessToken  = req.header( 'Authorization' ) ;
         accTok = jwt.verify( AccessToken , ACCESS_TOKEN.KEY ) ;
         req.UserType = accTok.utyp ;
+        req.UserID = accTok.uid ;
 
     } catch ( err ) {
         if ( NO_TOKEN_REQUIRED_URL.has( req.url ) === false ) {
@@ -47,15 +48,11 @@ module.exports.verifyToken = ( req, res, next ) => {
             else                                    throw err                                 ;
         }
     }
-
+    // return next() ; // -pop
     try {
         const RefreshToken = req.cookies.RefreshToken ;
-        refTok = jwt.verify( RefreshToken , REFRESH_TOKEN.KEY) ;
-
-        req.UserID = refTok.uid ;
-        
+        refTok = jwt.verify( RefreshToken , REFRESH_TOKEN.KEY) ;        
         req.UserTS = refTok.uts ;
-        console.log( refTok )
         if ( accTok.uid !== refTok.uid ) throw { err: errData.invalidToken }       ;
 
     } catch ( err ) {

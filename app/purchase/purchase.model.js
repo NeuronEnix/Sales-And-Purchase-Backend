@@ -91,6 +91,15 @@ purchaseSchema.statics.List = async ( PageNo, UserID ) => {
     return await Purchase.aggregate( aggregateList ) ; 
 }
 
+purchaseSchema.statics.Delete = async ( PurchaseID ) => {
+    const purchaseDoc = await Purchase.findById( PurchaseID ) ;
+    console.log( purchaseDoc )
+    if ( !purchaseDoc ) 
+        throw { err : errData.resNotFound, info: 'Invalid PurchaseID' } ;
+
+    await Item.DecItemQty( purchaseDoc.Items ) ;
+    await Purchase.findOneAndDelete( PurchaseID ) ;
+}
 
 const Purchase = mongoose.model( 'purchases', purchaseSchema ) ;
 module.exports = Purchase;
