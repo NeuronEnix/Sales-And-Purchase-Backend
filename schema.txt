@@ -18,19 +18,20 @@ items {
 }
 
 // Type Values : for item_qty_logs
-    a : add,
-    p : purchase,
-    s : sell,
-    e : expired,
-    d : defect,
-    r : rollback,
-    u : update,
+    add : add,
+    pur : purchase,
+    sal : sell,
+    exp : expired,
+    def : defect,
+    upd : update,
+
 
 item_qty_logs {
     _id :
-    Type :  
-    Item : [ { Name : , Qty : }, { Name : , Qty : } ]
-    Undo : true ||||| nothing
+    Type :  any one of above Type Values
+    Item:
+    Qty : { Old: , New: }
+    RefID: ( only for purchase and sale ) will hold either ( PurchaseID || SaleID )
 }
 
 sellers {
@@ -43,7 +44,18 @@ purchases {
     _id :
     SellerID :
     UserID : 
-    Item : [ { Name : , Qty : }, { Name : , Qty : } ]
+    CreatedAt :
+    Items: {
+        i1: 10, // -> ItemName: Qty
+        i2: 110
+    }
+    Edits : [
+        CreatedAt:
+        Items: {
+            i1: 10, // -> ItemName: Qty
+            i2: 110
+        }
+    ]
 }
 
 sales {

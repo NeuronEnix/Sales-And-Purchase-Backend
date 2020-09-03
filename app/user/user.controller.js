@@ -1,7 +1,6 @@
-const User    = require( './user.model.js' ) ;
-const respond = require( '../../response.js' ) ;
-const { newAccessToken, newRefreshToken } = require( '../../middleware/auth.js' ) ;
-const { response } = require('express');
+const User    = require( './user.model' ) ;
+const respond = require( '../../response' ) ;
+const Token = require( '../../middleware/token' ) ;
 
 module.exports.signup = async ( req, res ) => {
     const userData  = req.body ;
@@ -10,11 +9,16 @@ module.exports.signup = async ( req, res ) => {
     respond.ok( res ) ;
 }
 
-module.exports.login = async ( req, res ) => {
+module.exports.login = async ( req, res, next ) => {
+
     const userCredential = req.body ;
-    const user = await User.LookUp( userCredential ) ;
-    await newRefreshToken( res, user ) ;
-    return respond.ok( res, { AccessToken : newAccessToken( user ), Type : user.Type } ) ;
+    const userDoc = await User.Login( userCredential ) ;
+
+    await Token.genRefreshTokenAndAddToCookie( res, userDoc );
+
+    respond.ok( res,{ AccessToken : await Token.genAccessToken( userDoc ) } ) ;
+    return next() ;
+
 }
 
 module.exports.logout = ( req, res ) => {

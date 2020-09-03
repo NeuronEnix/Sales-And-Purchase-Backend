@@ -29,11 +29,14 @@ userSchema.statics.AddNewUser = async ( userData ) => {
     }
 }
 
-userSchema.statics.LookUp = async ( { Email, Password } ) => {
+userSchema.statics.Login = async ( { Email, Password } ) => {
     const user = await User.findOne( { Email } , { Password:1, Type:1 } ) ;
     if ( user ) {
         const passMatched = await bcrypt.compare( Password, user.Password ) ;
-        if ( passMatched ) return user ;
+        if ( passMatched ) {
+            user.TS = Date.now() ;
+            return await user.save() ;
+        }
     }
     throw { err : errData.invalidCredential, info : 'Email or Password is Incorrect!' } ;
 }

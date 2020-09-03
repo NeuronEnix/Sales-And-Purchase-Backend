@@ -20,7 +20,7 @@ sellerSchema.statics.AddNewSeller = async ( sellerData ) => {
 
 sellerSchema.statics.getID = async ( sellerName ) => {
     const sellerID = await Seller.findOne( { Name : sellerName }, { _id : 1 } ) ;
-    if( !sellerID ) throw { err : errData.resNotFound, info : `Seller Name : ${ sellerName } ( Doesn't exist in database. )/nPlease add the seller name in seller section if wish to create a new one.` } ;
+    if( !sellerID ) throw { err : errData.resNotFound, info : `Seller Name : ${ sellerName } ( Doesn't exist in DATABASE ).` } ;
     return sellerID;
 }
 

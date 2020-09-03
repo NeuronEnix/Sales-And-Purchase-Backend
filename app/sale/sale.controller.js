@@ -1,56 +1,71 @@
-const Sale    = require( './sale.model.js'   ) ;
-const respond = require( '../../response.js' ) ;
+const moment = require( 'moment' ) ;
+const ObjectID = require( 'mongoose').Types.ObjectId ;
 
-module.exports.create = async ( req, res ) => {
+const Sale       = require( './sale.model.js'        ) ;
+const respond    = require( '../../response.js'      ) ;
+
+const errData = respond.errData;
+
+module.exports.create = async ( req, res, next ) => {
     const saleData = req.body ;
+
     saleData.UserID = req.UserID ;
-    await Sale.Create( saleData ) ;
-    return respond.ok( res ) ;
+    saleData.CreatedAt = moment() ;
+
+    const sale = await Sale.Create( saleData ) ;
+    respond.ok( res , { SaleID: sale._id } ) ;
+
+    return next() ;
+
 }
 
-module.exports.detail = async ( req, res ) => {
-    const filter  = req.body ;
-    const project = { _id:0, Items:1 } ;
-    return respond.ok( res, await Sale.findOne( filter , project ) ) ;
+module.exports.update = async ( req, res, next ) => {
+
+    const saleData = req.body ;
+    saleData.CreatedAt = moment() ;
+    
+    await Sale.Update( saleData ) ;
+    respond.ok( res ) ;
+    return next() ;
+
 }
 
-module.exports.listMy = async ( req, res ) => {
-    const pageNo = req.body.P;
-    const filter  = { UserID:req.UserID } ;
-    const project = { _id:1 } ;
-    const doc = await Sale.List( filter, project );
-    data = [];
-    for( d of doc ) {
-        data.push({
-            _id:d._id,
-            ItemCount : 34,
-        })
-    }
-    return respond.ok( res, data ) ;
+module.exports.detail = async ( req, res, next ) => {
+    const SaleID = req.query.SaleID ;
+    const saleDetail = await Sale.findById( SaleID, '-_id Items' ) ;
+
+    respond.ok( res, saleDetail ) ;
+    return next();
 }
 
-module.exports.listAll = async ( req, res ) => {
-    const pageNo = req.body.P;
-    const project = { _id:1 } ;
-    let doc = await Sale.List( {}, project, pageNo )
-    data = [];
-    for( d of doc ) {
-        data.push({
-            _id:d._id,
-            UserName : 'User'+pageNo,
-            ItemCount : 34,
-        })
-    }
-    return respond.ok( res, data ) ;
+module.exports.editDetail = async ( req, res, next ) => {
+    const { SaleID, EditIndex } = req.query ;
+
+    const saleEditDetail = await Sale.aggregate([
+        { $match : { _id: ObjectID( SaleID ) } },
+        { $project : { _id:0, EditedData: { $arrayElemAt : [ "$Edits", parseInt( EditIndex ) ] }}},
+    ]) ;
+
+    respond.ok( res, saleEditDetail[0].EditedData ) ;
+    return next();
+}
+
+module.exports.list = async ( req, res, next ) => {
+    const { PageNo, UserID }  = req.query ;
+    respond.ok( res, await Sale.List( PageNo, UserID ) ) ;
+    return next() ;
 }
 
 
-module.exports.update = async ( req, res ) => {
-    await Sale.findOneAndUpdate( { _id:req.body._id }, { $set : { Items:req.body.Items } } ) ;
-    return respond.ok( res ) ;
-}
 
 module.exports.delete = async ( req, res ) => { 
-    console.log( await Sale.findByIdAndDelete( req.body._id ) ) ;
-    return respond.ok( res ) ;
+    const { SaleID } = req.body ; 
+    const deletedDoc = await Sale.findByIdAndDelete( SaleID ) ;
+
+    if ( deletedDoc )
+        respond.ok( res ) ;
+    else {
+        respond.err( res, { err : errData.resNotFound, info: 'Invalid SaleID' }) ;
+    }
+
 }
