@@ -34,6 +34,12 @@ module.exports.CONFIG = {
 }
 
 module.exports.DB_LIMITER = {
+    
+    ITEMS : {
+        PURCHASE_LIST_PER_PAGE : 10,
+        SALE_LIST_PER_PAGE : 10,
+    },
+
     PURCHASE : {
         LIST : 10,
     },
@@ -41,4 +47,5 @@ module.exports.DB_LIMITER = {
     SALE : {
         LIST : 10,
     },
+
 }
