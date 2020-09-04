@@ -1,4 +1,4 @@
-require( 'dotenv' ).config() ; // Configures env vars ;
+const {CONFIG} = require( './server.config' ) // Server configuration ;
 
 const db = require( './connection.js' ) ;
 db.connect() ;
@@ -24,7 +24,7 @@ app.use( cookieParser(), cors( corsOptions ), express.json() ) ;
 app.use( requestLogger, token.verifyToken, auth.authorize, App.router ) ;
 app.use( respond.errHandler ) ;
 
-const PORT = process.env.SERVER_PORT ;
+const PORT = CONFIG.SERVER.PORT;
 app.listen( PORT, () => { console.log( 'Listening on port ' + PORT ) } ) ;
 
 let ID = 1;
