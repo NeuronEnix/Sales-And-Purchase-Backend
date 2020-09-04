@@ -1,5 +1,7 @@
 const mongoose = require( 'mongoose' ) ;
 
+const { DB } = require( './server.config' ).CONFIG
+
 //Fixes all deprecation warnings
 mongoose.set( 'useNewUrlParser'    , true  ) ;
 mongoose.set( 'useFindAndModify'   , false ) ;
@@ -16,7 +18,7 @@ require( './app/purchase/purchase.model.js' ) ;
 
 // Connects to DB
 module.exports.connect = () => {
-    mongoose.connect( process.env.DB_URL) 
+    mongoose.connect( DB.URL ) 
         .then  ( val => { console.log('Connected to DB')     ; } )
         .catch ( err => { console.log('Not Connected to DB') ; } ) ;
 }
