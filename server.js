@@ -1,4 +1,8 @@
 require( 'dotenv' ).config() ; // Configures env vars ;
+
+const db = require( './connection.js' ) ;
+db.connect() ;
+
 const cors         = require( 'cors'                 ) ;
 const express      = require( 'express'              ) ;
 const cookieParser = require( 'cookie-parser'        ) ;
@@ -8,9 +12,6 @@ const App     = require( './app'              ) ;
 const auth    = require( './middleware/auth'  ) ;
 const token   = require( './middleware/token' ) ;
 const respond = require( './response'         ) ;
-
-const db = require( './connection.js' ) ;
-db.connect() ;
 
 const app = express() ;
 const corsOptions = {
