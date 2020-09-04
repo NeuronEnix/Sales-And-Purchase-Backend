@@ -9,7 +9,6 @@ module.exports.authorize = async( req, res, next ) => {
     
     // If user is not admin
     if ( req.UserType !== "a" ) {
-        // console.log( 'doooo')
         let url = req.url ;
         
         // Remove query parameter from the url
