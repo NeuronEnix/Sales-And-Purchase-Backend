@@ -12,6 +12,7 @@ let purchaseSchema = new mongoose.Schema ({
     CreatedAt : { type : Date , required : true                                } ,
     Items     : { type : {}   , required : true                                } ,
     Edits     : { type : [ { CreatedAt:Date, Items:{}, _id:false, } ]          } ,
+    Status    : { type : String, default:"n" }, // n -> new; e -> edited; d -> deleted 
 });
 
 purchaseSchema.statics.Create = async ( purchaseData ) => {
@@ -26,7 +27,10 @@ purchaseSchema.statics.Create = async ( purchaseData ) => {
 
 purchaseSchema.statics.Update = async ( purchaseUpdateData ) => {
 
-    const purchaseDoc = await Purchase.findById( purchaseUpdateData.PurchaseID ) ;
+    const purchaseDoc = await Purchase.findOne( { _id:purchaseUpdateData.PurchaseID, Status: { $ne: "d" } } ) ;
+    if ( !purchaseDoc ) 
+        throw { err: errData.resNotFound, info: "Purchase resource not found or is deleted"}
+
     await Item.DecItemQty( purchaseDoc.Items        ) ;
     await Item.IncItemQty( purchaseUpdateData.Items ) ;  
 
@@ -34,7 +38,7 @@ purchaseSchema.statics.Update = async ( purchaseUpdateData ) => {
         CreatedAt : purchaseDoc.CreatedAt,
         Items     : purchaseDoc.Items,
     }) ;
-
+    purchaseDoc.Status = "e" ;
     Object.assign( purchaseDoc, purchaseUpdateData ) ;
     return await purchaseDoc.save() ;
 
@@ -46,7 +50,7 @@ purchaseSchema.statics.List = async ( PageNo, UserID ) => {
         { $sort: { _id:-1} },
         { $skip: PageNo*10 },
         { $limit: 10, },
-        { $project : { Items:1, CreatedAt:1, UserID:1, SellerID:1, Edits:1 } },
+        { $project : { Items:1, CreatedAt:1, UserID:1, SellerID:1, Edits:1, Status: 1 } },
         {
             $lookup: {
                 from: 'users',
@@ -92,13 +96,14 @@ purchaseSchema.statics.List = async ( PageNo, UserID ) => {
 }
 
 purchaseSchema.statics.Delete = async ( PurchaseID ) => {
-    const purchaseDoc = await Purchase.findById( PurchaseID ) ;
-    console.log( purchaseDoc )
+
+    const purchaseDoc = await Purchase.findOne( { _id:PurchaseID, Status: { $ne: "d" } } ) ;
     if ( !purchaseDoc ) 
-        throw { err : errData.resNotFound, info: 'Invalid PurchaseID' } ;
+        throw { err: errData.resNotFound, info: "Purchase resource not found or is deleted"}
 
     await Item.DecItemQty( purchaseDoc.Items ) ;
-    await Purchase.findOneAndDelete( PurchaseID ) ;
+    purchaseDoc.Status = 'd' ;
+    await purchaseDoc.save() ;
 }
 
 const Purchase = mongoose.model( 'purchases', purchaseSchema ) ;

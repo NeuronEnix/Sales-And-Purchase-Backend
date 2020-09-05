@@ -24,8 +24,8 @@ module.exports.update = async ( req, res, next ) => {
     const saleData = req.body ;
     saleData.CreatedAt = moment() ;
     
-    const updatedSale = await Sale.Update( saleData ) ;
-    respond.ok( res, updatedSale._id ) ;
+    await Sale.Update( saleData ) ;
+    respond.ok( res ) ;
     return next() ;
 
 }

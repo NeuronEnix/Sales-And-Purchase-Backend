@@ -10,6 +10,7 @@ let saleSchema = new mongoose.Schema ({
     CreatedAt : { type : Date , required : true                                } ,
     Items     : { type : {}   , required : true                                } ,
     Edits     : { type : [ { CreatedAt:Date, Items:{}, _id:false, } ]          } ,
+    Status    : { type : String, default:"n" }, // n -> new; e -> edited; d -> deleted 
 });
 
 saleSchema.statics.Create = async ( saleData ) => {
@@ -23,8 +24,11 @@ saleSchema.statics.Create = async ( saleData ) => {
 
 saleSchema.statics.Update = async ( saleUpdateData ) => {
     
-    
-    const saleDoc = await Sale.findById( saleUpdateData.SaleID ) ;
+
+    const saleDoc = await Sale.findOne( { _id:saleUpdateData.SaleID, Status: { $ne: "d" } } ) ;
+    if ( !saleDoc ) 
+        throw { err: errData.resNotFound, info: "Sale resource not found or is deleted"}
+
     await Item.IncItemQty( saleDoc.Items ) ;  
 
     try { await Item.DecItemQty( saleUpdateData.Items ) ; }
@@ -39,19 +43,19 @@ saleSchema.statics.Update = async ( saleUpdateData ) => {
         CreatedAt : saleDoc.CreatedAt,
         Items     : saleDoc.Items,
     })
-
+    saleDoc.Status = "e" ;
     Object.assign( saleDoc, saleUpdateData ) ;
     return await saleDoc.save() ;
 
-    // Optimize incomplete
+    // // Optimize incomplete
     // let is_update_ok = function lo( avail_item_qty, old_sal_data, new_sal_data ) {
 
-    //     for( const item_qty_pair of avail_item_qty ) {
-    //         const item_name = item_qty_pair.Name ;
-    //         const available_item_qty = item_qty_pair.Qty ;
-    //         if ( available_item_qty + old_sal_data[ item_name ] - new_sal_data[ item_name ] < 0 )
-    //             return false;
-    //     }
+    //     // for( const item_qty_pair of avail_item_qty ) {
+    //     //     const item_name = item_qty_pair.Name ;
+    //     //     const available_item_qty = item_qty_pair.Qty ;
+    //     //     if ( available_item_qty + old_sal_data[ item_name ] - new_sal_data[ item_name ] < 0 )
+    //     //         return false;
+    //     // }
     //     return true ;
     // }
 
@@ -71,7 +75,7 @@ saleSchema.statics.Update = async ( saleUpdateData ) => {
     //             as : "avail_item_qty"
     //         },
     //     },
-    //     { $addFields : { update_ok: is_update_ok( "") } },
+    //     { $addFields : { update_ok: is_update_ok( ) } },
     //     { $project : { Edits:0 } }
     // ]
     // return await Sale.aggregate( aggregateList ) ;
@@ -85,7 +89,7 @@ saleSchema.statics.List = async ( PageNo, UserID ) => {
         { $sort: { _id:-1} },
         { $skip: PageNo*10 },
         { $limit: 10, },
-        { $project : { Items:1, CreatedAt:1, UserID:1, Edits:1 } },
+        { $project : { Items:1, CreatedAt:1, UserID:1, Edits:1, Status:1 } },
         {
             $lookup: {
                 from: 'users',
@@ -118,13 +122,14 @@ saleSchema.statics.List = async ( PageNo, UserID ) => {
 }
 
 saleSchema.statics.Delete = async ( SaleID ) => {
-    const saleDoc = await Sale.findById( SaleID ) ;
-    console.log( saleDoc )
+
+    const saleDoc = await Sale.findOne( { _id:SaleID, Status: { $ne: "d" } } ) ;
     if ( !saleDoc ) 
-        throw { err : errData.resNotFound, info: 'Invalid SaleID' } ;
+        throw { err: errData.resNotFound, info: "Sale resource not found or is deleted"}
 
     await Item.IncItemQty( saleDoc.Items ) ;
-    await Sale.findOneAndDelete( SaleID ) ;
+    saleDoc.Status = 'd';
+    await saleDoc.save() ;
 }
 
 
