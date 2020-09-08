@@ -1,9 +1,10 @@
 const router = require( 'express' ).Router() ;
-const user = require( './user.controller' ) ;
-const validate = require( '../../validator.js' ) ;
 
-router.post( '/login'  , validate.user.login  , user.login  ) ;
-router.post( '/signup' , validate.user.signup , user.signup ) ;
-router.post( '/logout' , validate.user.logout , user.logout ) ;
+const user = require( './user.controller' ) ;
+const { validator } = require( '../../validator' ) ;
+
+router.post( '/login'  , validator.user.login  , user.login  ) ;
+router.post( '/signup' , validator.user.signup , user.signup ) ;
+router.post( '/logout' , validator.user.logout , user.logout ) ;
 
 module.exports.router = router
