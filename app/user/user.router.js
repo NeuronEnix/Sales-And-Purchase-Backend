@@ -5,6 +5,6 @@ const { validator } = require( '../../validator' ) ;
 
 router.post( '/login'  , validator.user.login  , user.login  ) ;
 router.post( '/signup' , validator.user.signup , user.signup ) ;
-router.post( '/logout' , validator.user.logout , user.logout ) ;
+router.get ( '/logout'  , validator.user.logout , user.logout ) ;
 
 module.exports.router = router
