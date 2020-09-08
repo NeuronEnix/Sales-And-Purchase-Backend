@@ -44,7 +44,7 @@ module.exports.user = {
         Password : userSchema.pass,
     }),
 
-    logout : Joi.forbidden(),
+    logout : Joi.object({}),
 
     signup : Joi.object({
         FullName : userSchema.fullName,
@@ -103,7 +103,7 @@ module.exports.seller = {
     }),
 
     search : Joi.object({
-        S : sellerSchema.name,
+        SellerName : sellerSchema.name,
     }),
     
 } ;
