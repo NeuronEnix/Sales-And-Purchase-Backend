@@ -11,13 +11,13 @@ const userSchema = {
 } ;
 
 const itemSchema = {
-    name : Joi.string().alphanum().trim().min( 1 ).max( 50 ).required(),
+    name : Joi.string().trim().min( 1 ).max( 50 ).required(),
     unit : Joi.string().trim().min( 1 ).max( 5  ).required(),
     qty  : Joi.number().positive().required(),
 } ;
 
 const sellerSchema = {
-    name : Joi.string().alphanum().trim().min( 1 ).max( 50 ).required(),
+    name : Joi.string().trim().min( 1 ).max( 50 ).required(),
 } ;
 
 // ---------- Common Schema ---------- //
