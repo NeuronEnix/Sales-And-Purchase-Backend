@@ -21,18 +21,12 @@ const sellerSchema = {
 } ;
 
 // ---------- Common Schema ---------- //
+
 const commonSchema = {
 
-    _id : Joi.string().length(24).required(),
-
-    // itemNameQtyPair : Joi.array().items(
-    //     Joi.object({
-    //         Name : itemSchema.name,
-    //         Qty  : itemSchema.qty,
-    //     })
-    // ).min( 1 ).max( 50 ).required(),
-    itemNameQtyPair: Joi.object().pattern(/\w{2,25}/, itemSchema.qty ),
-    pageNo : Joi.number().required(),
+    _id : Joi.string().length(24),
+    itemNameQtyPair: Joi.object().pattern( itemSchema.name, itemSchema.qty ).required(),
+    pageNo : Joi.number().min(0).max(100).required(),
 
 }
 
@@ -117,13 +111,27 @@ module.exports.purchase = {
     }),
     
     update : Joi.object({
-        PurchaseID : commonSchema._id,
+        PurchaseID : commonSchema._id.required(),
         SellerName : sellerSchema.name,
         Items : commonSchema.itemNameQtyPair,
     }),
-    
+
+    detail : Joi.object({
+        PurchaseID : commonSchema._id.required(),
+    }),
+
+    list : Joi.object({
+        PageNo : commonSchema.pageNo,
+        UserID : commonSchema._id,
+    }),
+
+    listEdits : Joi.object({
+        PurchaseID : commonSchema._id.required(),
+        EditIndex : commonSchema.pageNo,
+    }),
+
     delete : Joi.object({
-        PurchaseID: commonSchema._id
+        PurchaseID: commonSchema._id.required(),
     }),
 
 } ;
@@ -132,18 +140,32 @@ module.exports.purchase = {
 module.exports.sale = {
 
     create : Joi.object({
-        Items : commonSchema.itemNameQtyPair
+        Items : commonSchema.itemNameQtyPair,
     }),
     
     update : Joi.object({
-        SaleID : commonSchema._id,
+        SaleID : commonSchema._id.required(),
         Items : commonSchema.itemNameQtyPair,
     }),
 
-    delete : Joi.object({
-        SaleID: commonSchema._id
+    detail : Joi.object({
+        SaleID : commonSchema._id.required(),
+    }),
+
+    list : Joi.object({
+        PageNo : commonSchema.pageNo,
+        UserID : commonSchema._id,
     }),
     
+    listEdits : Joi.object({
+        SaleID : commonSchema._id.required(),
+        EditIndex : commonSchema.pageNo,
+    }),
+
+    delete : Joi.object({
+        SaleID: commonSchema._id.required(),
+    }),
+
 } ;
 
 module.exports.auth = {

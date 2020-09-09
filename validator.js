@@ -42,21 +42,21 @@ module.exports.validator = {
         search : ( req, res, next ) => { validate( req, res, next, seller.search ) },
     },
 
-    sale : {
-        create  : ( req, res, next ) => { validate( req, res, next, sale.create  ) },
-        detail  : ( req, res, next ) => { validate( req, res, next, sale.detail  ) },
-        update  : ( req, res, next ) => { validate( req, res, next, sale.update  ) },
-        delete  : ( req, res, next ) => { validate( req, res, next, sale.delete  ) },
-        listAll : ( req, res, next ) => { validate( req, res, next, sale.listAll ) },
-        listMy  : ( req, res, next ) => { validate( req, res, next, sale.listMy  ) },
+    purchase : {
+        create    : ( req, res, next ) => { validate( req, res, next, purchase.create    ) },
+        update    : ( req, res, next ) => { validate( req, res, next, purchase.update    ) },
+        detail    : ( req, res, next ) => { validate( req, res, next, purchase.detail    ) },
+        list      : ( req, res, next ) => { validate( req, res, next, purchase.list      ) },
+        listEdits : ( req, res, next ) => { validate( req, res, next, purchase.listEdits ) },
+        delete    : ( req, res, next ) => { validate( req, res, next, purchase.delete    ) },
     },
 
-    purchase : {
-        create  : ( req, res, next ) => { validate( req, res, next, purchase.create  ) },
-        detail  : ( req, res, next ) => { validate( req, res, next, purchase.detail  ) },
-        update  : ( req, res, next ) => { validate( req, res, next, purchase.update  ) },
-        delete  : ( req, res, next ) => { validate( req, res, next, purchase.delete  ) },
-        listAll : ( req, res, next ) => { validate( req, res, next, purchase.listAll ) },
-        listMy  : ( req, res, next ) => { validate( req, res, next, purchase.listMy  ) },
+    sale : {
+        create    : ( req, res, next ) => { validate( req, res, next, sale.create    ) },
+        update    : ( req, res, next ) => { validate( req, res, next, sale.update    ) },
+        detail    : ( req, res, next ) => { validate( req, res, next, sale.detail    ) },
+        list      : ( req, res, next ) => { validate( req, res, next, sale.list      ) },
+        listEdits : ( req, res, next ) => { validate( req, res, next, sale.listEdits ) },
+        delete    : ( req, res, next ) => { validate( req, res, next, sale.delete    ) },
     },
 }
