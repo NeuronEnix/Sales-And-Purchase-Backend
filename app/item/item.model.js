@@ -60,7 +60,7 @@ itemSchema.statics.IncItemQty = async ( itemQtyPair ) => {
         }
     
     for ( const itemDoc of itemDocList ) 
-        itemDoc.Qty += itemQtyPair[ itemDoc.Name ] ;
+        itemDoc.Qty += parseInt(itemQtyPair[ itemDoc.Name ]) ;
 
     for( const doc of itemDocList )
         await doc.save();
@@ -89,7 +89,7 @@ itemSchema.statics.DecItemQty = async ( itemQtyPair ) => {
                 err  : errData.notEnoughStock, 
                 info : `Item : '${ itemDoc.Name }' Stock is low, cannot perform the operation`,  
             } ;
-        itemDoc.Qty -= QtyToBeReduced;
+        itemDoc.Qty -= parseInt(QtyToBeReduced);
     }
 
     for ( const doc of itemDocList )
