@@ -45,6 +45,7 @@ purchaseSchema.statics.Update = async ( purchaseUpdateData ) => {
 }
 
 purchaseSchema.statics.List = async ( PageNo, UserID ) => {
+    const match = { Status: { $not: { $eq: "d" } } } ;
     const aggregateList = [
         
         { $sort: { _id:-1} },
@@ -90,7 +91,9 @@ purchaseSchema.statics.List = async ( PageNo, UserID ) => {
     ] ;
 
     if ( UserID ) 
-        aggregateList.unshift( { $match : { UserID: mongoose.Types.ObjectId( UserID ) }, } ) ;
+        match.UserID = mongoose.Types.ObjectId( UserID );
+        
+    aggregateList.unshift( { $match : match, } ) ;
 
     return await Purchase.aggregate( aggregateList ) ; 
 }
