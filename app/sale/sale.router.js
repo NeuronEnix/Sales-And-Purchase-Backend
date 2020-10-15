@@ -9,6 +9,6 @@ router.get( '/list-edits' , validator.sale.listEdits , sale.editDetail ) ;
 router.post( '/create' , validator.sale.create , sale.create ) ;
 router.post( '/update' , validator.sale.update , sale.update ) ;
 
-router.delete( '/delete' , validator.sale.delete , sale.delete  ) ;
+router.post( '/delete' , validator.sale.delete , sale.delete  ) ;
 
-module.exports.router = router
+module.exports.router = router ;
