@@ -34,11 +34,11 @@ module.exports.errData = {
     dbCommitErr         : { code : 4  , err : 'Error While Saving To Database'  },
     duplicateErr        : { code : 5  , err : 'Value Already Exist (Duplicate)' },
     validationErr       : { code : 6  , err : 'Validation Error'                },
-    notEnoughStock          : { code : 7  , err : 'Not Enough Stock'                },
+    notEnoughStock      : { code : 7  , err : 'Not Enough Stock'                },
     AccessTokenExpired  : { code : 8  , err : 'Access Token Expired'            },
     RefreshTokenExpired : { code : 9  , err : 'Refresh Token Expired'           },
     unAuthorized        : { code : 10 , err : 'Not Authorized'                  },
-    
+    AccessTokenNotFound : { code : 11 , err : 'Access Token Not Found'          },
 } ;
 
 module.exports.defRes = ( resObj, apiName ) => {

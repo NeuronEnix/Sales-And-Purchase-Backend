@@ -2,17 +2,17 @@ const User    = require( './user.model' ) ;
 const respond = require( '../../response' ) ;
 const Token = require( '../../middleware/token' ) ;
 
-module.exports.signup = async ( req, res ) => {
+module.exports.signUp = async ( req, res ) => {
     const userData  = req.body ;
     userData.UserID = req.UserID ;  // UserID of the person creating this account
     await User.AddNewUser( userData ) ;
     respond.ok( res ) ;
 }
 
-module.exports.login = async ( req, res, next ) => {
+module.exports.signIn = async ( req, res, next ) => {
 
     const userCredential = req.body ;
-    const userDoc = await User.Login( userCredential ) ;
+    const userDoc = await User.SignIn( userCredential ) ;
 
     await Token.genRefreshTokenAndAddToCookie( res, userDoc );
 
@@ -21,6 +21,6 @@ module.exports.login = async ( req, res, next ) => {
 
 }
 
-module.exports.logout = ( req, res ) => {
+module.exports.signOut = ( req, res ) => {
     res.clearCookie('RefreshToken') ;     return respond.ok( res ) ;
 }

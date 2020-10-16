@@ -3,8 +3,8 @@ const router = require( 'express' ).Router() ;
 const user = require( './user.controller' ) ;
 const { validator } = require( '../../validator' ) ;
 
-router.post( '/login'  , validator.user.login  , user.login  ) ;
-router.post( '/signup' , validator.user.signup , user.signup ) ;
-router.get ( '/logout'  , validator.user.logout , user.logout ) ;
+router.post( '/sign-up' , validator.user.signUp  , user.signUp  ) ;
+router.post( '/sign-in' , validator.user.signIn  , user.signIn  ) ;
+router.get ( '/sign-out', validator.user.signOut , user.signOut ) ;
 
 module.exports.router = router

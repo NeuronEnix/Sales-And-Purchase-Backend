@@ -22,9 +22,9 @@ const validate = async ( req, res, next, schema ) => {
 module.exports.validator = {
 
     user : {
-        login  : ( req, res, next ) => { validate( req, res, next, user.login  ) },
-        logout : ( req, res, next ) => { validate( req, res, next, user.logout ) },
-        signup : ( req, res, next ) => { validate( req, res, next, user.signup ) },
+        signUp  : ( req, res, next ) => { validate( req, res, next, user.signUp  ) },
+        signIn  : ( req, res, next ) => { validate( req, res, next, user.signIn  ) },
+        signOut : ( req, res, next ) => { validate( req, res, next, user.signOut ) },
     }, 
 
     item : {

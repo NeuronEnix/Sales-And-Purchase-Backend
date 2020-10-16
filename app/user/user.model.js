@@ -29,7 +29,7 @@ userSchema.statics.AddNewUser = async ( userData ) => {
     }
 }
 
-userSchema.statics.Login = async ( { Email, Password } ) => {
+userSchema.statics.SignIn = async ( { Email, Password } ) => {
     const user = await User.findOne( { Email } , { Password:1, Type:1 } ) ;
     if ( user ) {
         const passMatched = await bcrypt.compare( Password, user.Password ) ;

@@ -68,7 +68,7 @@ sales {
 
 User :
     | - SignUp
-    | - Login
+    | - SignIn
     x - History
         Self Added Users
         Users Added by other Users

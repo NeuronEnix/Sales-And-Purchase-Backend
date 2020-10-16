@@ -1,6 +1,4 @@
 const Joi = require( '@hapi/joi' ) ;
-const { number } = require('@hapi/joi');
-
 //////////////////////////////////////////////
 // Min - Max
 const userSchema = {
@@ -32,20 +30,20 @@ const commonSchema = {
 
 // ---------- User ---------- //
 module.exports.user = {
-    
-    login : Joi.object({
-        Email    : userSchema.email,
-        Password : userSchema.pass,
-    }),
 
-    logout : Joi.object({}),
-
-    signup : Joi.object({
+    signUp : Joi.object({
         FullName : userSchema.fullName,
         Email    : userSchema.email,
         Password : userSchema.pass,
         Type     : userSchema.type,
     }),
+    
+    signIn : Joi.object({
+        Email    : userSchema.email,
+        Password : userSchema.pass,
+    }),
+
+    signOut : Joi.object({}),
 
 } ;
 

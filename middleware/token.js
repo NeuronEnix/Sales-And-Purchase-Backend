@@ -17,7 +17,7 @@ async function getUserDataFromDB ( UserID, UserType, UserTS ) {
     return userDoc ;
 }
 
-router.get( '/refresh-token', async ( req, res, next ) => {
+router.get( '/ref-tok', async ( req, res, next ) => {
     const userDoc = await getUserDataFromDB( req.UserID, req.UserType, req.UserTS ) ; 
     userDoc.TS = Date.now() ; await userDoc.save() ;
     await this.genRefreshTokenAndAddToCookie( res, userDoc ) ;
@@ -25,7 +25,7 @@ router.get( '/refresh-token', async ( req, res, next ) => {
     return next() ;
 }) ;
 
-router.get( '/access-token' , async ( req, res, next ) => {
+router.get( '/acc-tok' , async ( req, res, next ) => {
     const userDoc = await getUserDataFromDB( req.UserID, req.UserType, req.UserTS ) ;
     respond.ok( res, { AccessToken : await this.genAccessToken( userDoc ) } ) ;
     return next() ;
@@ -35,25 +35,32 @@ module.exports.verifyToken = ( req, res, next ) => {
 
     let accTok, refTok ;
     
-    try {
+    try {// First verify 'AccessToken' and then retrieve UserID & UserType
         const AccessToken  = req.header( 'Authorization' ) ;
+        // At first when the user reload the page AccessToken will be an empty string
+        // So only verify if accTok exist throw an error stating that accessToken is expired
+        if( AccessToken === "" ) throw { name: "AccessTokenNotFound" } ;
         accTok = jwt.verify( AccessToken , ACCESS_TOKEN.KEY ) ;
-        req.UserType = accTok.utyp ;
-        req.UserID = accTok.uid ;
+        req.UserType = accTok.utyp ;    
 
     } catch ( err ) {
         if ( NO_TOKEN_REQUIRED_URL.has( req.url ) === false ) {
-            if ( err.name === 'JsonWebTokenError' ) throw { err: errData.invalidToken       } ;
-            if ( err.name === 'TokenExpiredError' ) throw { err: errData.AccessTokenExpired } ;
+            if ( err.name === 'JsonWebTokenError'   ) throw { err: errData.invalidToken        } ;
+            if ( err.name === 'TokenExpiredError'   ) throw { err: errData.AccessTokenExpired  } ;
+            if ( err.name === 'AccessTokenNotFound' ) throw { err: errData.AccessTokenNotFound } ;
+            
             else                                    throw err                                 ;
         }
     }
     // return next() ; // -pop
+
+    // Verify 'RefreshToken' and retrieve UserTimeStamp ( TimeStamp when ref tok was created ) it is also saved in Database
     try {
         const RefreshToken = req.cookies.RefreshToken ;
         refTok = jwt.verify( RefreshToken , REFRESH_TOKEN.KEY) ;        
         req.UserTS = refTok.uts ;
-        if ( accTok.uid !== refTok.uid ) throw { err: errData.invalidToken }       ;
+        req.UserID = refTok.uid ;
+        if ( accTok && accTok.uid !== refTok.uid ) throw { err: errData.invalidToken }       ;
 
     } catch ( err ) {
         if ( NO_TOKEN_REQUIRED_URL.has( req.url ) === false ) {

@@ -11,7 +11,7 @@
 Runs the app in the development mode.<br />
 
 Send request to this address [http://localhost:9999](http://localhost:9999)
-Sample request to login: [http://localhost:9999/user/login](http://localhost:9999/user/login)
+Sample request to Sign In: [http://localhost:9999/user/sign-in](http://localhost:9999/user/sign-in)
 
 Find **Request and Response Structure** : [here](https://docs.google.com/spreadsheets/d/1vqTZ1gUXocfpqFwpBZyJUOG4Hcgfby-Gue452HNODrU/edit?usp=sharing)
 
@@ -20,9 +20,9 @@ Note: Please visit **Request and Response Structure** for more details of api
 ### User
 | **URL**		| **Method**	| **Description**                                           |
 | ---           | ---     		| ---                                                       |
-| `/user/login` | POST    		| To login                                                  |
-| `/user/signup`| POST  		| To create a new user. (Only admins can create a new user) |
-| `/user/logout`| GET  			| To log out an user ( clears token ) 						|
+| `/user/sign-in` | POST    		| To Sign In                                                |
+| `/user/sign-up`| POST  		| To create a new user. (Only admins can create a new user) |
+| `/user/sign-out`| GET  			| To log out an user ( clears token ) 						|
 
 ### Item
 | **URL**			| **Method**	| **Description**                                           |
@@ -64,6 +64,6 @@ Note: Please visit **Request and Response Structure** for more details of api
 ### Token
 | **URL**					| **Method**	| **Description**                               |
 | ---           			| ---     		| ---                                           |
-| `/token/access-token` 	| GET 			| To refresh access token 						|
-| `/token/refresh-token`	| GET 			| To refresh token set in cookie as http only 	|
+| `/token/acc-tok` 	| GET 			| To refresh access token 						|
+| `/token/ref-tok`	| GET 			| To refresh token set in cookie as http only 	|
 

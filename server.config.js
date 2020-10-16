@@ -14,7 +14,7 @@ module.exports.CONFIG = {
 
     ACCESSIBLE_URL : {
         NON_ADMIN_URL : new Set( [ '/item', '/sale/create', '/sale/update', '/sale/list' ] ),
-        NO_TOKEN_REQUIRED_URL : new Set( [ '/user/login', '/token/access-token', '/token/refresh-token', '/user/logout' ] )
+        NO_TOKEN_REQUIRED_URL : new Set( [ '/user/sign-in', '/user/sign-out', '/token/acc-tok', '/token/ref-tok', ] )
     },
     
     TOKEN : {
@@ -27,7 +27,7 @@ module.exports.CONFIG = {
     
         ACCESS_TOKEN : {
             KEY : "ADD_ACCESS_TOKEN_KEY",
-            EXPIRY : "2d",
+            EXPIRY : "15s",
         },
 
     }
