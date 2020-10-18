@@ -1,6 +1,6 @@
 const router = require( 'express' ).Router() ;
 const purchase = require( './purchase.controller.js' ) ;
-const { validator } = require( '../../validator.js' ) ;
+const { validator } = require( "../../middleware/validator" ) ;
 
 router.get( '/list'       , validator.purchase.list      , purchase.list       ) ;
 router.get( '/detail'     , validator.purchase.delete    , purchase.detail     ) ;

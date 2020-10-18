@@ -1,7 +1,12 @@
-const respond = require( './response' ) ;
+const { item }     = require( "./validations/item.val") ;
+const { sale }     = require( "./validations/sale.val") ;
+const { user }     = require( "./validations/user.val") ;
+const { seller }   = require( "./validations/seller.val") ;
+const { purchase } = require( "./validations/purchase.val") ;
+
+const respond = require( '../response' ) ;
 const errData = respond.errData ;
 
-const { user, item, seller, purchase, sale } = require( './validator.config.js' ) ;
 
 const validate = async ( req, res, next, schema ) => {
     try { 
@@ -19,10 +24,10 @@ const validate = async ( req, res, next, schema ) => {
     }
 } ;
 
-module.exports.validator = {
+const validator = {
 
     user : {
-        signUp  : ( req, res, next ) => { validate( req, res, next, user.signUp  ) },
+        signUp  : ( req, res, next ) => { validate( req, res, next, user.signUP  ) },
         signIn  : ( req, res, next ) => { validate( req, res, next, user.signIn  ) },
         signOut : ( req, res, next ) => { validate( req, res, next, user.signOut ) },
     }, 
@@ -60,3 +65,5 @@ module.exports.validator = {
         delete    : ( req, res, next ) => { validate( req, res, next, sale.delete    ) },
     },
 }
+
+module.exports = { validator };

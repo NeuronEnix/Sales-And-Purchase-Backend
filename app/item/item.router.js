@@ -1,7 +1,7 @@
 const router = require( 'express' ).Router() ;
 
 const item     = require( './item.controller'  ) ;
-const { validator } = require( '../../validator.js' ) ;
+const { validator } = require( "../../middleware/validator" ) ;
 
 router.get( '/'          , validator.item.search    , item.search    ) ;
 router.get( '/sales'     , validator.item.sales     , item.sales     ) ;
