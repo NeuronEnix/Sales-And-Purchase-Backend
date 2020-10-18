@@ -1,6 +1,6 @@
 const router = require( 'express' ).Router() ;
 const sale = require( './sale.controller.js' ) ;
-const { validator } = require( '../../validator.js' ) ;
+const { validator } = require( "../../middleware/validator" ) ;
 
 router.get( '/list'       , validator.sale.list      , sale.list       ) ;
 router.get( '/detail'     , validator.sale.delete    , sale.detail     ) ;
