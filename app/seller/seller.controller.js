@@ -10,6 +10,7 @@ module.exports.add = async ( req, res ) => {
 
 module.exports.search = async ( req, res, next ) => {
     const sellerName = req.query.SellerName ;
+    // Eg: sellerName = "abc" -> regExSellerName = .*a.*b.*c.*
     const regExSellerName = ".*" + sellerName.split("").join( ".*" ) + ".*" ; 
     const sellerNameList = await Seller.aggregate([
         { $match : { Name : new RegExp( regExSellerName ) } },
