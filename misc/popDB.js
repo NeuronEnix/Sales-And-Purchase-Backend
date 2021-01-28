@@ -24,8 +24,8 @@ const api = {
 
     user : {
 
-        login   : async data => { return axios.defaults.headers.common['Authorization'] = ( await axios.post( '/user/login' , data ) ).AccessToken },
-        signup  : async data => { userCred.push( {Email:data.Email, Password:data.Password} ); return await axios.post( '/user/signup', data ) },
+        login   : async data => { return axios.defaults.headers.common['Authorization'] = ( await axios.post( '/user/sign-in' , data ) ).AccessToken },
+        signup  : async data => { userCred.push( {Email:data.Email, Password:data.Password} ); return await axios.post( '/user/sign-up', data ) },
 
     },
 

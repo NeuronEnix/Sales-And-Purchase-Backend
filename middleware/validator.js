@@ -27,7 +27,7 @@ const validate = async ( req, res, next, schema ) => {
 const validator = {
 
     user : {
-        signUp  : ( req, res, next ) => { validate( req, res, next, user.signUP  ) },
+        signUp  : ( req, res, next ) => { validate( req, res, next, user.signUp  ) },
         signIn  : ( req, res, next ) => { validate( req, res, next, user.signIn  ) },
         signOut : ( req, res, next ) => { validate( req, res, next, user.signOut ) },
     }, 
