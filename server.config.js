@@ -12,6 +12,15 @@ module.exports.CONFIG = {
         ROUNDS : 10,
     },
 
+    DEFAULT_ADMIN_DATA: {
+        Email: "a@a.com",
+        Password: "a",
+        FullName: "ADMIN",
+
+        Type: 'a', //admin
+        UserID: "000000000000000000000000",
+    },
+
     ACCESSIBLE_URL : {
         NON_ADMIN_URL : new Set( [ '/item', '/sale/create', '/sale/update', '/sale/list' ] ),
         NO_TOKEN_REQUIRED_URL : new Set( [ '/user/sign-in', '/user/sign-out', '/token/acc-tok', '/token/ref-tok', ] )

@@ -1,6 +1,6 @@
 const bcrypt   = require( 'bcryptjs' ) ;
 const mongoose = require( 'mongoose' ) ;
-
+const { DEFAULT_ADMIN_DATA } = require('../../server.config').CONFIG;
 const errData  = require( '../../response.js' ).errData ;
 const { BCRYPT } = require( '../../server.config').CONFIG ;
 
@@ -43,3 +43,20 @@ userSchema.statics.SignIn = async ( { Email, Password } ) => {
 
 const User = mongoose.model( 'users', userSchema ) ;
 module.exports = User;
+
+async function createAdminIfUserCollectionIsEmpty() {
+    try {
+        console.log( "Check :: Existence of users")
+        if ( await User.estimatedDocumentCount() == 0 ) {
+            
+            if ( !DEFAULT_ADMIN_DATA.Email || !DEFAULT_ADMIN_DATA.Password )
+                return console.log( "Check :: Could not Create Admin, defaultAdmin Email not provided" );
+            await User.AddNewUser( DEFAULT_ADMIN_DATA );
+            console.log( "Check :: User Collection is empty: Admin Created!" );
+        }
+        console.log( "Check :: Users Exist")
+    } catch ( err ) {
+        console.log( "Check :: Couldn't Create Admin", err )
+    }
+}
+createAdminIfUserCollectionIsEmpty();
